@@ -50,7 +50,7 @@ body{cursor:none}
 .merch-item{background:rgba(0,0,0,0.45);border:1px solid rgba(255,255,255,0.03);padding:18px;border-radius:6px;color:var(--muted);min-height:80px;display:flex;align-items:center;justify-content:center;text-align:center}
 
 /* background image placeholder - replace assets/bg.jpg with your artwork */
-body{background:linear-gradient(180deg, rgba(1,1,4,0.92), rgba(0,0,0,0.86)), url("assets/bg.jpg") center center / cover no-repeat fixed;}
+body{background:linear-gradient(180deg, rgba(1,1,4,0.92), rgba(0,0,0,0.86)), url("/mindmatter/assets/bg.jpg?v=8") center center / cover no-repeat fixed;}
 
 /* simulated grunge/brick overlay to match screenshot when background art not available */
 body::before{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;background-image:
