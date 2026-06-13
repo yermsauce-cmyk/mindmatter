@@ -105,3 +105,27 @@
   requestAnimationFrame(frame);
 
 })();
+
+// small particle trail for neon cursor sparkles
+(function(){
+  const canvas = document.getElementById('creature-bg');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  function spawn(x,y){
+    particles.push({x,y,life:60,r:2+Math.random()*4, hue: 320+Math.random()*60});
+  }
+  window.addEventListener('mousemove', (e)=>{ spawn(e.clientX,e.clientY); });
+  function drawParticles(){
+    for(let i=particles.length-1;i>=0;i--){
+      const p = particles[i];
+      p.life--; p.x += (Math.random()-0.5)*2; p.y += (Math.random()-0.5)*2; p.r *= 0.99;
+      if(p.life<=0 || p.r<0.3) particles.splice(i,1);
+      else{
+        ctx.beginPath(); ctx.fillStyle = `hsla(${p.hue},100%,60%,${p.life/90})`;
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+      }
+    }
+    requestAnimationFrame(drawParticles);
+  }
+  requestAnimationFrame(drawParticles);
+})();
