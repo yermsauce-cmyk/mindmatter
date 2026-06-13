@@ -1,71 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1">
-        <title>Yerm | Punk Dracula Art & Vibes</title>
-        <!-- deployed: 2026-06-13 cache-bust -->
-        <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700;800&family=Bangers&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="styles.css">
-    </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YERM • THE CAVE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700;800&family=Bangers&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
 <body>
-    <canvas id="creature-bg" aria-hidden="true"></canvas>
+  <!-- Background Canvas for Creature -->
+  <canvas id="creature-bg"></canvas>
 
-    <header class="site-header">
-        <div class="container">
-            <div class="logo">MIND MATTER</div>
-            <nav class="nav small">
-                <a href="#cave">THE CAVE</a>
-                <a href="#stash">THE STASH</a>
-                <a href="#lore">THE LORE</a>
-                <a href="#gang">THE GANG</a>
-            </nav>
-        </div>
+  <!-- Main Content Overlay -->
+  <div class="overlay">
+    <header>
+      <h1 class="neon-title">YERM</h1>
+      <div class="loot-counter">
+        <span>LOOT</span> <strong id="loot-count">14</strong>
+      </div>
     </header>
 
-    <main>
-        <section class="hero container hero-split">
-            <div class="hero-left">
-                <h1 class="neon">THE CAVE</h1>
-                <p class="tagline">Click to evolve the creature, explore gallery and shop.</p>
-                <div class="actions">
-                    <button id="toggle-anim" class="btn">Pause</button>
-                </div>
-                <div class="scale-control">
-                    <label for="scaleX">Horizontal scale</label>
-                    <input id="scaleX" type="range" min="0.6" max="2.0" step="0.05" value="1.6">
-                </div>
-            </div>
+    <nav class="main-menu">
+      <a href="#" class="neon-link" data-action="gallery">THE CAVE<br><span>Gallery</span></a>
+      <a href="#" class="neon-link" data-action="shop">THE STASH<br><span>Shop</span></a>
+      <a href="#" class="neon-link" data-action="lore">THE LORE<br><span>About</span></a>
+      <a href="#" class="neon-link" data-action="socials">THE GANG<br><span>Socials</span></a>
+    </nav>
 
-            <aside class="hero-right merch">
-                <div class="merch-title">MERCHANDING FEED</div>
-                <div class="merch-list">
-                    <div class="merch-item">Gothic-Punk Rat<br>T-Shirts</div>
-                    <div class="merch-item">Gothic Patches<br>Prints</div>
-                    <div class="merch-item">Gothic-Punk-Bats<br>Prints</div>
-                </div>
-            </aside>
-            <nav class="vertical-menu">
-                <ul>
-                    <li class="vm-neon">THE CAVE</li>
-                    <li>THE STASH</li>
-                    <li>THE LORE</li>
-                    <li>THE GANG</li>
-                </ul>
-            </nav>
-        </section>
+    <div class="progress-container">
+      <p>NEXT UNLOCK: <strong>VEX'S TATTOO</strong></p>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: 45%;"></div>
+      </div>
+    </div>
 
-        <section id="about" class="container info">
-            <h2>About this experiment</h2>
-            <p>Move your mouse and scroll to evolve the creature. State persists in your browser.</p>
-        </section>
-    </main>
+    <div class="creature-hint">
+      Click Vex to evolve him
+    </div>
+  </div>
 
-    <footer class="site-footer">
-        <div class="container">© 2026 Yerm — Punk Dracula Art & Vibes</div>
-    </footer>
-
-        <div id="cursor-dot" aria-hidden="true"></div>
-        <script src="script.js"></script>
+  <div id="cursor-dot" aria-hidden="true"></div>
+  <script src="script.js"></script>
 </body>
 </html>
