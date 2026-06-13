@@ -1,0 +1,107 @@
+(() => {
+  const canvas = document.getElementById('creature-bg');
+  const ctx = canvas.getContext('2d');
+  let w = canvas.width = window.innerWidth;
+  let h = canvas.height = window.innerHeight;
+
+  const stateKey = 'mm_creature_v1';
+  const saved = (() => { try { return JSON.parse(localStorage.getItem(stateKey) || 'null') } catch(e){return null} })();
+
+  const creature = saved || {
+    x: w * 0.6,
+    y: h * 0.45,
+    rx: 180,
+    ry: 120,
+    hue: 190,
+    pulse: 0,
+    level: 0
+  };
+
+  let mouse = {x: w/2, y: h/2};
+  let running = true;
+
+  function resize(){ w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight }
+  window.addEventListener('resize', resize);
+
+  window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY });
+  window.addEventListener('touchmove', (e)=>{ if(e.touches && e.touches[0]){ mouse.x=e.touches[0].clientX; mouse.y=e.touches[0].clientY }} ,{passive:true});
+
+  window.addEventListener('scroll', () => {
+    const s = window.scrollY / Math.max(1, document.body.scrollHeight - window.innerHeight);
+    creature.level = Math.min(2, Math.floor(s * 3));
+    creature.hue = 190 + creature.level * 40;
+  });
+
+  const toggleBtn = document.getElementById('toggle-anim');
+  if(toggleBtn){ toggleBtn.addEventListener('click', ()=>{ running = !running; toggleBtn.textContent = running ? 'Pause' : 'Resume'; }) }
+
+  function drawCreature(dt){
+    // background fog
+    const g = ctx.createLinearGradient(0,0,0,h);
+    g.addColorStop(0, `rgba(10,10,12,${0.12 + creature.level*0.05})`);
+    g.addColorStop(1, 'rgba(2,2,4,0.6)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0,0,w,h);
+
+    // pulsing size
+    creature.pulse += dt * 0.0025;
+    const pulse = 1 + Math.sin(creature.pulse) * 0.06 * (1 + creature.level*0.6);
+
+    // move slightly toward mouse (parallax)
+    creature.x += (mouse.x - creature.x) * 0.03;
+    creature.y += (mouse.y - creature.y) * 0.02;
+
+    // neon body
+    const rx = creature.rx * pulse * (1 + creature.level*0.08);
+    const ry = creature.ry * pulse * (1 + creature.level*0.06);
+    const gx = ctx.createRadialGradient(creature.x, creature.y, Math.min(10,rx*0.05), creature.x, creature.y, Math.max(rx,ry));
+    gx.addColorStop(0, `hsla(${creature.hue},100%,65%,0.95)`);
+    gx.addColorStop(0.4, `hsla(${creature.hue+40},90%,45%,0.35)`);
+    gx.addColorStop(1, 'rgba(0,0,0,0)');
+
+    ctx.save();
+    ctx.translate(creature.x, creature.y);
+    ctx.rotate(Math.sin(creature.pulse*0.6)*0.03);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI*2);
+    ctx.fillStyle = gx;
+    ctx.fill();
+
+    // soft glow
+    ctx.globalCompositeOperation = 'lighter';
+    for(let i=1;i<=3;i++){
+      ctx.beginPath(); ctx.ellipse(0,0,rx*(0.5+i*0.4),ry*(0.45+i*0.35),0,0,Math.PI*2);
+      ctx.fillStyle = `hsla(${creature.hue+10*i},100%,55%,${0.06/(i)})`; ctx.fill();
+    }
+    ctx.globalCompositeOperation = 'source-over';
+
+    // eyes
+    const eyeOffsetX = rx * 0.28;
+    const eyeOffsetY = -ry * 0.08;
+    const eyeRadius = Math.max(6, Math.min(24, rx*0.08));
+    const lookX = (mouse.x - creature.x) * 0.12;
+    const lookY = (mouse.y - creature.y) * 0.12;
+    // left eye
+    ctx.beginPath(); ctx.fillStyle='#fff'; ctx.arc(-eyeOffsetX,eyeOffsetY,eyeRadius,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.fillStyle='#111'; ctx.arc(-eyeOffsetX + lookX*0.4, eyeOffsetY + lookY*0.4, eyeRadius*0.45,0,Math.PI*2); ctx.fill();
+    // right eye
+    ctx.beginPath(); ctx.fillStyle='#fff'; ctx.arc(eyeOffsetX,eyeOffsetY,eyeRadius,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.fillStyle='#111'; ctx.arc(eyeOffsetX + lookX*0.4, eyeOffsetY + lookY*0.4, eyeRadius*0.45,0,Math.PI*2); ctx.fill();
+
+    ctx.restore();
+  }
+
+  let last = performance.now();
+  function frame(t){
+    const dt = t - last; last = t;
+    if(running){ drawCreature(dt); }
+    // persist occasionally
+    if(Math.random() < 0.02) localStorage.setItem(stateKey, JSON.stringify(creature));
+    requestAnimationFrame(frame);
+  }
+
+  // clear once to ensure transparency then start
+  ctx.clearRect(0,0,w,h);
+  requestAnimationFrame(frame);
+
+})();
