@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Yerm | Punk Dracula Art & Vibes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <canvas id="creature-bg" style="position:fixed; top:0; left:0; z-index:-1;"></canvas>
+    <!-- Nav, Hero, Sections here -->
+    <script src="script.js"></script>
+</body>
+</html>
+body { background: #111; color: #ddd; font-family: sans-serif; overflow-x: hidden; }
+/* Add neon reds, overlays, parallax containers */
+// script.js (basic version)
+const canvas = document.getElementById('creature-bg');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let creature = { x: 100, y: 100, frame: 0, level: 0 }; // Track evolution
+let img = new Image(); img.src = 'creature-sprites.png'; // Your sprite sheet
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Draw background fog/textures
+    // Draw sprite frame based on level
+    ctx.drawImage(img, creature.frame * 100, 0, 100, 100, creature.x, creature.y, 200, 200);
+    requestAnimationFrame(animate);
+}
+
+// Mouse interaction
+document.addEventListener('mousemove', (e) => {
+    // Eyes follow, subtle move
+    creature.x = e.clientX * 0.1; // Parallax
+});
+
+// Scroll evolution
+let scrollPos = 0;
+window.addEventListener('scroll', () => {
+    scrollPos = window.scrollY / document.body.scrollHeight;
+    if (scrollPos > 0.3) creature.level = 1; // Unlock pose
+    // Save to localStorage
+    localStorage.setItem('creatureState', JSON.stringify(creature));
+});
+
+animate();
