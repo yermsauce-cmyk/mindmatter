@@ -18,6 +18,52 @@
     scaleX: 1.6
   };
 
+  // create a best-effort procedural sprite (used if no uploaded asset)
+  function makeProceduralSprite(){
+    const sw = 900, sh = 460;
+    const sc = document.createElement('canvas'); sc.width = sw; sc.height = sh;
+    const gx = sc.getContext('2d');
+
+    // transparent background
+    gx.clearRect(0,0,sw,sh);
+
+    const cx = sw/2, cy = sh/2;
+    // main body gradient
+    const grad = gx.createRadialGradient(cx,cy,40,cx,cy,Math.max(sw,sh));
+    grad.addColorStop(0, 'rgba(40,220,255,0.98)');
+    grad.addColorStop(0.35, 'rgba(30,140,200,0.6)');
+    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    gx.save();
+    gx.translate(cx,cy);
+    gx.beginPath(); gx.ellipse(0,0,sw*0.38,sh*0.32,0,0,Math.PI*2);
+    gx.fillStyle = grad; gx.fill();
+
+    // soft layered glows
+    gx.globalCompositeOperation = 'lighter';
+    for(let i=1;i<=4;i++){
+      gx.beginPath(); gx.ellipse(0,0,sw*0.12*i + sw*0.18, sh*0.08*i + sh*0.12, 0,0,Math.PI*2);
+      gx.fillStyle = `hsla(${190 + i*6},100%,55%,${0.08/(i)})`; gx.fill();
+    }
+    gx.globalCompositeOperation = 'source-over';
+
+    // eyes
+    const ex = sw*0.12, ey = -sh*0.02, er = Math.max(8, sw*0.03);
+    gx.beginPath(); gx.fillStyle = '#fff'; gx.arc(-ex,ey,er,0,Math.PI*2); gx.fill();
+    gx.beginPath(); gx.fillStyle = '#111'; gx.arc(-ex+6,ey+2,er*0.44,0,Math.PI*2); gx.fill();
+    gx.beginPath(); gx.fillStyle = '#fff'; gx.arc(ex,ey,er,0,Math.PI*2); gx.fill();
+    gx.beginPath(); gx.fillStyle = '#111'; gx.arc(ex+4,ey+2,er*0.44,0,Math.PI*2); gx.fill();
+
+    // small texture lines
+    gx.strokeStyle = 'rgba(0,0,0,0.06)'; gx.lineWidth = 2;
+    for(let i=0;i<6;i++){ gx.beginPath(); gx.ellipse(-sw*0.06 + i*sw*0.03, sh*0.06, sw*0.05, sh*0.018, -0.06*i, 0, Math.PI*2); gx.stroke(); }
+
+    gx.restore();
+    return sc;
+  }
+
+  // attach procedural sprite to creature (fallback)
+  creature.sprite = makeProceduralSprite();
+
   // expose a small API for external interactions (click-to-evolve)
   window.MM = window.MM || {};
   window.MM.creature = creature;
@@ -62,44 +108,58 @@
     creature.x += (mouse.x - creature.x) * 0.03;
     creature.y += (mouse.y - creature.y) * 0.02;
 
-    // neon body
+    // neon body (prefer sprite if available)
     const rx = creature.rx * (creature.scaleX || 1) * pulse * (1 + creature.level*0.08);
     const ry = creature.ry * pulse * (1 + creature.level*0.06);
-    const gx = ctx.createRadialGradient(creature.x, creature.y, Math.min(10,rx*0.05), creature.x, creature.y, Math.max(rx,ry));
-    gx.addColorStop(0, `hsla(${creature.hue},100%,65%,0.95)`);
-    gx.addColorStop(0.4, `hsla(${creature.hue+40},90%,45%,0.35)`);
-    gx.addColorStop(1, 'rgba(0,0,0,0)');
+    if(creature.sprite){
+      const s = creature.sprite;
+      const sw = s.width, sh = s.height;
+      ctx.save();
+      ctx.translate(creature.x, creature.y);
+      ctx.rotate(Math.sin(creature.pulse*0.6)*0.03);
+      ctx.globalCompositeOperation = 'lighter';
+      const dw = (rx / (sw/2)) * sw;
+      const dh = (ry / (sh/2)) * sh;
+      ctx.drawImage(s, -dw/2, -dh/2, dw, dh);
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.restore();
+    } else {
+      const gx = ctx.createRadialGradient(creature.x, creature.y, Math.min(10,rx*0.05), creature.x, creature.y, Math.max(rx,ry));
+      gx.addColorStop(0, `hsla(${creature.hue},100%,65%,0.95)`);
+      gx.addColorStop(0.4, `hsla(${creature.hue+40},90%,45%,0.35)`);
+      gx.addColorStop(1, 'rgba(0,0,0,0)');
 
-    ctx.save();
-    ctx.translate(creature.x, creature.y);
-    ctx.rotate(Math.sin(creature.pulse*0.6)*0.03);
-    ctx.beginPath();
-    ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI*2);
-    ctx.fillStyle = gx;
-    ctx.fill();
+      ctx.save();
+      ctx.translate(creature.x, creature.y);
+      ctx.rotate(Math.sin(creature.pulse*0.6)*0.03);
+      ctx.beginPath();
+      ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI*2);
+      ctx.fillStyle = gx;
+      ctx.fill();
 
-    // soft glow
-    ctx.globalCompositeOperation = 'lighter';
-    for(let i=1;i<=3;i++){
-      ctx.beginPath(); ctx.ellipse(0,0,rx*(0.5+i*0.4),ry*(0.45+i*0.35),0,0,Math.PI*2);
-      ctx.fillStyle = `hsla(${creature.hue+10*i},100%,55%,${0.06/(i)})`; ctx.fill();
+      // soft glow
+      ctx.globalCompositeOperation = 'lighter';
+      for(let i=1;i<=3;i++){
+        ctx.beginPath(); ctx.ellipse(0,0,rx*(0.5+i*0.4),ry*(0.45+i*0.35),0,0,Math.PI*2);
+        ctx.fillStyle = `hsla(${creature.hue+10*i},100%,55%,${0.06/(i)})`; ctx.fill();
+      }
+      ctx.globalCompositeOperation = 'source-over';
+
+      // eyes
+      const eyeOffsetX = rx * 0.28;
+      const eyeOffsetY = -ry * 0.08;
+      const eyeRadius = Math.max(6, Math.min(24, rx*0.08));
+      const lookX = (mouse.x - creature.x) * 0.12;
+      const lookY = (mouse.y - creature.y) * 0.12;
+      // left eye
+      ctx.beginPath(); ctx.fillStyle='#fff'; ctx.arc(-eyeOffsetX,eyeOffsetY,eyeRadius,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.fillStyle='#111'; ctx.arc(-eyeOffsetX + lookX*0.4, eyeOffsetY + lookY*0.4, eyeRadius*0.45,0,Math.PI*2); ctx.fill();
+      // right eye
+      ctx.beginPath(); ctx.fillStyle='#fff'; ctx.arc(eyeOffsetX,eyeOffsetY,eyeRadius,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.fillStyle='#111'; ctx.arc(eyeOffsetX + lookX*0.4, eyeOffsetY + lookY*0.4, eyeRadius*0.45,0,Math.PI*2); ctx.fill();
+
+      ctx.restore();
     }
-    ctx.globalCompositeOperation = 'source-over';
-
-    // eyes
-    const eyeOffsetX = rx * 0.28;
-    const eyeOffsetY = -ry * 0.08;
-    const eyeRadius = Math.max(6, Math.min(24, rx*0.08));
-    const lookX = (mouse.x - creature.x) * 0.12;
-    const lookY = (mouse.y - creature.y) * 0.12;
-    // left eye
-    ctx.beginPath(); ctx.fillStyle='#fff'; ctx.arc(-eyeOffsetX,eyeOffsetY,eyeRadius,0,Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.fillStyle='#111'; ctx.arc(-eyeOffsetX + lookX*0.4, eyeOffsetY + lookY*0.4, eyeRadius*0.45,0,Math.PI*2); ctx.fill();
-    // right eye
-    ctx.beginPath(); ctx.fillStyle='#fff'; ctx.arc(eyeOffsetX,eyeOffsetY,eyeRadius,0,Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.fillStyle='#111'; ctx.arc(eyeOffsetX + lookX*0.4, eyeOffsetY + lookY*0.4, eyeRadius*0.45,0,Math.PI*2); ctx.fill();
-
-    ctx.restore();
 
     // nose sparkle emitter (red trail toward mouse)
     const noseX = creature.x + (rx * 0.34);
