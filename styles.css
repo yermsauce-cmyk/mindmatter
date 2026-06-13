@@ -2,7 +2,7 @@
   --bg:#0b0b0f; --muted:#cfcfd6; --accent:#ff2d55; --neon:#00e6ff;
 }
 *{box-sizing:border-box}
-html,body{height:100%;margin:0;background:var(--bg);color:var(--muted);font-family:Inter,system-ui,Arial,Helvetica,sans-serif}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--muted);font-family:Oswald,Inter,system-ui,Arial,Helvetica,sans-serif}
 canvas#creature-bg{position:fixed;inset:0;z-index:0;display:block}
 .container{max-width:1100px;margin:0 auto;padding:28px}
 .site-header{position:fixed;top:0;left:0;right:0;z-index:5;background:linear-gradient(90deg,rgba(0,0,0,0.45),transparent);backdrop-filter:blur(4px)}
@@ -26,6 +26,14 @@ canvas#creature-bg{position:fixed;inset:0;z-index:0;display:block}
 
 /* subtle vignette overlay using pseudo-element on body via fixed element */
 body::after{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(1200px 600px at 20% 20%,rgba(0,230,255,0.04),transparent 10%,rgba(0,0,0,0.6));z-index:1}
+
+/* custom cursor */
+body{cursor:none}
+#cursor-dot{position:fixed;left:0;top:0;width:18px;height:18px;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen;background:radial-gradient(circle,#fff 0%, rgba(0,230,255,0.95) 35%, rgba(255,45,85,0.6) 100%);box-shadow:0 0 18px rgba(0,230,255,0.6),0 0 40px rgba(255,45,85,0.12);transition:width .12s,height .12s,opacity .12s}
+#cursor-dot.small{width:10px;height:10px}
+
+/* quick responsive merch collapse */
+@media (max-width:900px){.hero-split{flex-direction:column}.hero-right.merch{width:auto;order:2}}
 
 /* merch sidebar */
 .hero-right.merch{width:280px;flex:0 0 280px;padding:12px;border-left:1px solid rgba(255,255,255,0.03);position:relative;z-index:3}

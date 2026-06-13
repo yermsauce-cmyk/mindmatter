@@ -17,6 +17,16 @@
     level: 0
   };
 
+  // expose a small API for external interactions (click-to-evolve)
+  window.MM = window.MM || {};
+  window.MM.creature = creature;
+  window.MM.evolve = function(){
+    creature.level = Math.min(4, (creature.level||0) + 1);
+    creature.hue = (creature.hue + 40) % 360;
+    creature.rx *= 0.96; creature.ry *= 0.96;
+    localStorage.setItem(stateKey, JSON.stringify(creature));
+  };
+
   let mouse = {x: w/2, y: h/2};
   let running = true;
 
@@ -112,7 +122,7 @@
   const ctx = canvas.getContext('2d');
   let particles = [];
   function spawn(x,y){
-    particles.push({x,y,life:60,r:2+Math.random()*4, hue: 320+Math.random()*60});
+    particles.push({x,y,life:60,r:2+Math.random()*4, hue: 200+Math.random()*140});
   }
   window.addEventListener('mousemove', (e)=>{ spawn(e.clientX,e.clientY); });
   function drawParticles(){
@@ -128,4 +138,30 @@
     requestAnimationFrame(drawParticles);
   }
   requestAnimationFrame(drawParticles);
+})();
+
+// custom cursor element + click-to-evolve
+(function(){
+  const dot = document.getElementById('cursor-dot');
+  if(!dot) return;
+  let dx=0, dy=0, cx=window.innerWidth/2, cy=window.innerHeight/2;
+  window.addEventListener('mousemove', (e)=>{ cx = e.clientX; cy = e.clientY; });
+  function render(){
+    dx += (cx - dx) * 0.2; dy += (cy - dy) * 0.2;
+    dot.style.transform = `translate(${dx}px, ${dy}px) translate(-50%, -50%)`;
+    requestAnimationFrame(render);
+  }
+  render();
+
+  window.addEventListener('click', (e)=>{
+    // spawn a burst
+    for(let i=0;i<12;i++){
+      const ev = new MouseEvent('mousemove',{clientX:e.clientX + (Math.random()-0.5)*30, clientY:e.clientY + (Math.random()-0.5)*30});
+      window.dispatchEvent(ev);
+    }
+    // pulse cursor
+    dot.classList.add('small'); setTimeout(()=>dot.classList.remove('small'),120);
+    // evolve creature if API present
+    if(window.MM && typeof window.MM.evolve === 'function') window.MM.evolve();
+  });
 })();
