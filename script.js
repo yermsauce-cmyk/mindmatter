@@ -1,3 +1,6 @@
+// Global particles array (shared by creature and cursor modules)
+window.particles = window.particles || [];
+
 (() => {
   const canvas = document.getElementById('creature-bg');
   const ctx = canvas.getContext('2d');
@@ -166,7 +169,7 @@
     const noseY = creature.y - (ry * 0.06);
     // spawn a few red particles moving from nose toward mouse
     for(let i=0;i< (creature.level+1); i++){
-      particles.push({x:noseX + (Math.random()-0.5)*8, y:noseY + (Math.random()-0.5)*8, life:40 + Math.random()*30, r:1+Math.random()*2, hue: 345 + Math.random()*20, vx:(mouse.x-noseX)*0.02*(Math.random()*0.6+0.2), vy:(mouse.y-noseY)*0.02*(Math.random()*0.6+0.2), type:'spark'});
+      window.particles.push({x:noseX + (Math.random()-0.5)*8, y:noseY + (Math.random()-0.5)*8, life:40 + Math.random()*30, r:1+Math.random()*2, hue: 345 + Math.random()*20, vx:(mouse.x-noseX)*0.02*(Math.random()*0.6+0.2), vy:(mouse.y-noseY)*0.02*(Math.random()*0.6+0.2), type:'spark'});
     }
   }
 
@@ -197,7 +200,7 @@
 (function(){
   const canvas = document.getElementById('creature-bg');
   const ctx = canvas.getContext('2d');
-  let particles = [];
+  const particles = window.particles;  // Use global particles array
   function spawn(x,y,opts){
     const o = opts||{};
     particles.push({x,y,life:o.life||60,r:o.r||(2+Math.random()*4), hue: o.hue||(200+Math.random()*140), vx:o.vx||0, vy:o.vy||0, type:o.type||'dot'});
