@@ -15,7 +15,7 @@
     hue: 190,
     pulse: 0,
     level: 0,
-    scaleX: 1.3
+    scaleX: 1.6
   };
 
   // expose a small API for external interactions (click-to-evolve)
