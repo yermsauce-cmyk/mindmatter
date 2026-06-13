@@ -14,7 +14,8 @@
     ry: 120,
     hue: 190,
     pulse: 0,
-    level: 0
+    level: 0,
+    scaleX: 1.3
   };
 
   // expose a small API for external interactions (click-to-evolve)
@@ -62,7 +63,7 @@
     creature.y += (mouse.y - creature.y) * 0.02;
 
     // neon body
-    const rx = creature.rx * pulse * (1 + creature.level*0.08);
+    const rx = creature.rx * (creature.scaleX || 1) * pulse * (1 + creature.level*0.08);
     const ry = creature.ry * pulse * (1 + creature.level*0.06);
     const gx = ctx.createRadialGradient(creature.x, creature.y, Math.min(10,rx*0.05), creature.x, creature.y, Math.max(rx,ry));
     gx.addColorStop(0, `hsla(${creature.hue},100%,65%,0.95)`);
@@ -113,6 +114,14 @@
   // clear once to ensure transparency then start
   ctx.clearRect(0,0,w,h);
   requestAnimationFrame(frame);
+
+  // scaleX control binding (if present)
+  const scaleInput = document.getElementById('scaleX');
+  if(scaleInput){
+    scaleInput.addEventListener('input', (e)=>{ const v = parseFloat(e.target.value); creature.scaleX = v; });
+    // initialize from input value
+    creature.scaleX = parseFloat(scaleInput.value || creature.scaleX);
+  }
 
 })();
 

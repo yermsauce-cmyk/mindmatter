@@ -13,6 +13,10 @@ canvas#creature-bg{position:fixed;inset:0;z-index:0;display:block}
 .hero{padding-top:120px;padding-bottom:80px;position:relative;z-index:2}
 .hero-split{display:flex;gap:28px;align-items:flex-start}
 .hero-left{flex:1;color:var(--muted);z-index:2}
+.vertical-menu{position:absolute;right:320px;top:180px;z-index:4}
+.vertical-menu ul{list-style:none;margin:0;padding:0}
+.vertical-menu li{font-size:40px;color:rgba(255,255,255,0.9);padding:14px 28px;text-shadow:0 0 8px rgba(0,0,0,0.6);font-weight:700}
+.vertical-menu .vm-neon{color:var(--neon);text-shadow:0 0 24px rgba(0,230,255,0.18),0 0 40px rgba(255,45,85,0.06)}
 .hero h1,.neon{font-size:56px;margin:0 0 6px;color:var(--neon);text-shadow:0 0 18px rgba(0,230,255,0.12),0 0 36px rgba(255,45,85,0.06);font-weight:800}
 .tagline{opacity:.95;margin:0 0 18px;color:rgba(255,255,255,0.85)}
 .actions{display:flex;gap:12px;margin-top:16px}
@@ -34,6 +38,10 @@ body{cursor:none}
 
 /* quick responsive merch collapse */
 @media (max-width:900px){.hero-split{flex-direction:column}.hero-right.merch{width:auto;order:2}}
+
+.scale-control{margin-top:18px;display:flex;gap:8px;align-items:center}
+.scale-control label{font-size:13px;color:rgba(255,255,255,0.7)}
+.scale-control input[type=range]{width:180px}
 
 /* merch sidebar */
 .hero-right.merch{width:280px;flex:0 0 280px;padding:12px;border-left:1px solid rgba(255,255,255,0.03);position:relative;z-index:3}
