@@ -8,10 +8,10 @@
   const saved = (() => { try { return JSON.parse(localStorage.getItem(stateKey) || 'null') } catch(e){return null} })();
 
   const creature = saved || {
-    x: w * 0.6,
-    y: h * 0.45,
-    rx: 180,
-    ry: 120,
+    x: w * 0.28,
+    y: h * 0.46,
+    rx: 260,
+    ry: 160,
     hue: 190,
     pulse: 0,
     level: 0,
@@ -100,6 +100,14 @@
     ctx.beginPath(); ctx.fillStyle='#111'; ctx.arc(eyeOffsetX + lookX*0.4, eyeOffsetY + lookY*0.4, eyeRadius*0.45,0,Math.PI*2); ctx.fill();
 
     ctx.restore();
+
+    // nose sparkle emitter (red trail toward mouse)
+    const noseX = creature.x + (rx * 0.34);
+    const noseY = creature.y - (ry * 0.06);
+    // spawn a few red particles moving from nose toward mouse
+    for(let i=0;i< (creature.level+1); i++){
+      particles.push({x:noseX + (Math.random()-0.5)*8, y:noseY + (Math.random()-0.5)*8, life:40 + Math.random()*30, r:1+Math.random()*2, hue: 345 + Math.random()*20, vx:(mouse.x-noseX)*0.02*(Math.random()*0.6+0.2), vy:(mouse.y-noseY)*0.02*(Math.random()*0.6+0.2), type:'spark'});
+    }
   }
 
   let last = performance.now();
@@ -130,18 +138,29 @@
   const canvas = document.getElementById('creature-bg');
   const ctx = canvas.getContext('2d');
   let particles = [];
-  function spawn(x,y){
-    particles.push({x,y,life:60,r:2+Math.random()*4, hue: 200+Math.random()*140});
+  function spawn(x,y,opts){
+    const o = opts||{};
+    particles.push({x,y,life:o.life||60,r:o.r||(2+Math.random()*4), hue: o.hue||(200+Math.random()*140), vx:o.vx||0, vy:o.vy||0, type:o.type||'dot'});
   }
   window.addEventListener('mousemove', (e)=>{ spawn(e.clientX,e.clientY); });
   function drawParticles(){
     for(let i=particles.length-1;i>=0;i--){
       const p = particles[i];
-      p.life--; p.x += (Math.random()-0.5)*2; p.y += (Math.random()-0.5)*2; p.r *= 0.99;
-      if(p.life<=0 || p.r<0.3) particles.splice(i,1);
+      p.life--;
+      // motion
+      p.x += (p.vx || (Math.random()-0.5)*2);
+      p.y += (p.vy || (Math.random()-0.5)*1.6);
+      p.r *= 0.995;
+      if(p.life<=0 || p.r<0.2) particles.splice(i,1);
       else{
-        ctx.beginPath(); ctx.fillStyle = `hsla(${p.hue},100%,60%,${p.life/90})`;
-        ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+        ctx.beginPath();
+        if(p.type === 'spark'){
+          ctx.fillStyle = `hsla(${p.hue},100%,60%,${Math.min(1,p.life/60)})`;
+          ctx.arc(p.x,p.y,p.r*1.2,0,Math.PI*2); ctx.fill();
+        } else {
+          ctx.fillStyle = `hsla(${p.hue},80%,60%,${Math.min(1,p.life/90)})`;
+          ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+        }
       }
     }
     requestAnimationFrame(drawParticles);
