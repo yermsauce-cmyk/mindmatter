@@ -17,7 +17,7 @@ const rat = {
   img: new Image(),
   baseX: 0.28,
   baseY: 0.42,
-  size: 520
+  size: 580
 };
 
 rat.img.src = 'assets/vex.png';
