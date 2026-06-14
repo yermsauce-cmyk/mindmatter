@@ -18,7 +18,7 @@ const rat = {
   breathe: 0
 };
 
-rat.img.src = '/mindmatter/assets/vex-base.png';
+rat.img.src = 'assets/vex.png';
 
 let loot = 14;
 document.getElementById('loot-count').textContent = loot;
