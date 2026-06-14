@@ -1,5 +1,5 @@
 * { margin:0; padding:0; box-sizing:border-box; }
-body { background:#000; color:#fff; font-family:system-ui,sans-serif; display:flex; align-items:center; justify-content:center; height:100vh; flex-direction:column; gap:1rem; }
+body { height: 100vh; overflow: hidden; background: #000; }
 
 .full-bg {
   position: fixed;
@@ -37,7 +37,6 @@ body { background:#000; color:#fff; font-family:system-ui,sans-serif; display:fl
   transform: translateX(-50%);
   text-align: left;
   z-index: 10;
-  width: 380px;
 }
 
 .menu-link {
@@ -47,21 +46,12 @@ body { background:#000; color:#fff; font-family:system-ui,sans-serif; display:fl
   text-decoration: none;
   margin: 18px 0;
   text-shadow: 0 0 20px #ff0044;
-  line-height: 1.1;
   transition: all 0.3s;
 }
 
 .menu-link:hover {
   color: #ff00ff;
   transform: translateX(25px);
-}
-
-.menu-link span {
-  display: block;
-  font-size: 0.85rem;
-  color: rgba(255,255,255,0.55);
-  letter-spacing: 0.2em;
-  margin-top: 4px;
 }
 
 .merch-feed {
@@ -72,11 +62,10 @@ body { background:#000; color:#fff; font-family:system-ui,sans-serif; display:fl
   z-index: 10;
 }
 
-.feed-title {
-  color: #ff00ff;
-  margin-bottom: 12px;
-  text-align: center;
-  font-size: 1.35rem;
+.feed-title { 
+  color: #ff00ff; 
+  margin-bottom: 12px; 
+  text-align: center; 
 }
 
 .merch-item {
