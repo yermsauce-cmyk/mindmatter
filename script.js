@@ -17,13 +17,10 @@ const rat = {
   img: new Image(),
   baseX: 0.22,
   baseY: 0.45,
-  size: 480,
-  level: 1
+  size: 480
 };
 
 rat.img.src = 'assets/vex.png';
-
-let loot = 14;
 
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -37,12 +34,7 @@ function animate() {
 canvas.addEventListener('click', (e) => {
   const ratCenterX = canvas.width * rat.baseX + rat.size / 2;
   const ratCenterY = canvas.height * rat.baseY + rat.size / 2;
-  
   if (Math.hypot(e.clientX - ratCenterX, e.clientY - ratCenterY) < rat.size * 0.65) {
-    rat.level = Math.min(rat.level + 1, 12);
-    document.getElementById('level').textContent = rat.level;
-    document.getElementById('progress').style.width = (rat.level * 8) + '%';
-    
     canvas.style.filter = 'brightness(3) saturate(2.5)';
     setTimeout(() => canvas.style.filter = '', 250);
   }
