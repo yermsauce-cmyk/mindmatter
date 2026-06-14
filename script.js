@@ -3,7 +3,7 @@
 // Rat creature with parallax, particles, glow, click-to-evolve
 // ============================================================
 
-const canvas = document.getElementById('creature-canvas');
+const canvas = document.getElementById('rat-canvas');
 const ctx = canvas.getContext('2d');
 
 canvas.width = window.innerWidth;
@@ -11,8 +11,8 @@ canvas.height = window.innerHeight;
 
 const vex = {
   img: new Image(),
-  x: canvas.width * 0.2,
-  y: canvas.height * 0.35,
+  x: canvas.width * 0.15,
+  y: canvas.height * 0.3,
   size: 420,
   level: parseInt(localStorage.getItem('vexLevel')) || 0,
   angle: 0,
@@ -26,7 +26,7 @@ let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
 let scrollProgress = 0;
 
 // Update loot display
-document.getElementById('loot').textContent = loot;
+document.getElementById('loot-count').textContent = loot;
 
 // Animation Loop - Makes Vex feel alive
 function animate() {
@@ -34,7 +34,7 @@ function animate() {
 
   // Breathing + floating movement
   const breathe = Math.sin(Date.now() / 400) * 8;
-  vex.y = canvas.height * 0.35 + breathe;
+  vex.y = canvas.height * 0.3 + breathe;
 
   // Look at mouse (simple head tilt)
   vex.angle = (mouse.x - canvas.width * 0.4) / 30;
@@ -66,7 +66,7 @@ canvas.addEventListener('click', () => {
   loot += Math.floor(Math.random() * 3) + 2;
   
   localStorage.setItem('vexLevel', vex.level);
-  document.getElementById('loot').textContent = loot;
+  document.getElementById('loot-count').textContent = loot;
 
   // Visual feedback
   canvas.style.filter = 'brightness(2) saturate(2)';
@@ -89,8 +89,8 @@ document.querySelectorAll('.menu-item').forEach(item => {
     vex.level = Math.min(vex.level + 1, 12);
     localStorage.setItem('vexLevel', vex.level);
     
-    const section = item.dataset.section;
-    alert(`Vex is guiding you to ${section.toUpperCase()}... 👁️`); 
+    const action = item.dataset.action;
+    alert(`Vex is guiding you to ${action.toUpperCase()}... 👁️`); 
     // Later: replace alert with actual sections
   });
 });

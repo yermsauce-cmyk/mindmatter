@@ -8,31 +8,41 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Interactive Creature Background -->
-  <canvas id="creature-canvas"></canvas>
+  <!-- Static Background -->
+  <div class="background"></div>
 
-  <!-- Loot Box (absolute) -->
-  <div class="loot-box">
-    LOOT <span id="loot">14</span>
-  </div>
+  <!-- Interactive Rat Canvas (only thing that moves) -->
+  <canvas id="rat-canvas"></canvas>
 
-  <!-- Main Content -->
+  <!-- Overlay UI -->
   <div class="overlay">
-    <h1 class="neon">YERM</h1>
+    <!-- Top Neon Sign -->
+    <div class="mind-matter">MIND MATTER</div>
 
-    <nav class="menu">
-      <a href="#" class="menu-item" data-section="gallery">THE CAVE<br><span>Gallery</span></a>
-      <a href="#" class="menu-item" data-section="stash">THE STASH<br><span>Shop</span></a>
-      <a href="#" class="menu-item" data-section="lore">THE LORE<br><span>About</span></a>
-      <a href="#" class="menu-item" data-section="gang">THE GANG<br><span>Socials</span></a>
-    </nav>
+    <!-- Central Menu -->
+    <div class="central-menu">
+      <a href="#" class="menu-item" data-action="gallery">THE CAVE<br><span>Gallery</span></a>
+      <a href="#" class="menu-item" data-action="shop">THE STASH<br><span>Shop</span></a>
+      <a href="#" class="menu-item" data-action="lore">THE LORE<br><span>About</span></a>
+      <a href="#" class="menu-item" data-action="socials">THE GANG<br><span>Socials</span></a>
+    </div>
 
-    <div class="creature-info">
-      <div class="progress">
-        NEXT UNLOCK: <strong>VEX'S TATTOO</strong>
-        <div class="bar"><div id="progress-fill" class="fill"></div></div>
+    <!-- Right Side Merch Feed -->
+    <div class="merch-feed">
+      <h3>MERCHANDISING FEED</h3>
+      <div class="merch-item">Gothic-Punk Rat T-Shirts</div>
+      <div class="merch-item">Gothic Patches Prints</div>
+      <div class="merch-item">Gothic-Punk-Bats Prints</div>
+    </div>
+
+    <!-- Bottom Info -->
+    <div class="bottom-info">
+      <div class="loot">
+        LOOT <span id="loot-count">14</span>
       </div>
-      <p id="hint" class="hint">Click &amp; scroll to awaken Vex...</p>
+      <div class="unlock">
+        NEXT UNLOCK: VEX'S TATTOO
+      </div>
     </div>
   </div>
 
