@@ -15,21 +15,21 @@ window.addEventListener('resize', resize);
 
 const rat = {
   img: new Image(),
-  baseX: 0.28,
+  baseX: 0.22,
   baseY: 0.42,
   size: 580
 };
 
 rat.img.src = 'assets/vex.png';
 
+let loot = 14;
+document.getElementById('loot-count').textContent = loot;
+
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
   const float = Math.sin(Date.now() / 420) * 14;
-  
   const x = canvas.width * rat.baseX;
   const y = canvas.height * rat.baseY + float;
-
   ctx.drawImage(rat.img, x, y, rat.size, rat.size);
   requestAnimationFrame(animate);
 }
@@ -37,8 +37,9 @@ function animate() {
 canvas.addEventListener('click', (e) => {
   const ratCenterX = canvas.width * rat.baseX + rat.size / 2;
   const ratCenterY = canvas.height * rat.baseY + rat.size / 2;
-  
   if (Math.hypot(e.clientX - ratCenterX, e.clientY - ratCenterY) < rat.size * 0.68) {
+    loot += 3;
+    document.getElementById('loot-count').textContent = loot;
     canvas.style.filter = 'brightness(3.2) saturate(2.8)';
     setTimeout(() => canvas.style.filter = '', 280);
   }
