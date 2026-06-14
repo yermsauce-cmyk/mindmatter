@@ -64,7 +64,7 @@ body { height: 100vh; overflow: hidden; background: #000; }
 .merch-feed {
   position: absolute;
   top: 12%;
-  right: 4%;
+  right: 3%;
   width: 240px;
   z-index: 10;
 }
@@ -84,21 +84,34 @@ body { height: 100vh; overflow: hidden; background: #000; }
   color: #ddd;
 }
 
-.loot-area {
+.level-meter {
   position: absolute;
-  bottom: 7%;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 50px;
+  bottom: 10%;
+  left: 15%;
+  width: 300px;
   z-index: 10;
 }
 
-.loot, .next-unlock {
-  background: rgba(0,0,0,0.85);
-  padding: 12px 28px;
-  border: 2px solid #ff0044;
-  font-size: 1.45rem;
+.level-label {
+  color: #ff00ff;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  text-shadow: 0 0 10px #ff0088;
+}
+
+.level-meter .bar {
+  height: 12px;
+  background: #222;
+  border: 1px solid #ff0044;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.level-meter .fill {
+  height: 100%;
+  width: 10%;
+  background: linear-gradient(90deg, #ff00ff, #ff4400);
+  transition: width 0.3s ease;
 }
 
 
