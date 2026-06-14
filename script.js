@@ -46,3 +46,5 @@ canvas.addEventListener('click', (e) => {
 });
 
 rat.img.onload = animate;
+
+// Site code goes here
