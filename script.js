@@ -6,16 +6,18 @@
 const canvas = document.getElementById('rat-canvas');
 const ctx = canvas.getContext('2d');
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
 
 const rat = {
   img: new Image(),
-  baseX: 0.20,
-  baseY: 0.45,
-  size: 480,
-  level: parseInt(localStorage.getItem('vexLevel')) || 0,
-  breathe: 0
+  baseX: 0.18,
+  baseY: 0.48,
+  size: 460
 };
 
 rat.img.src = 'assets/vex.png';
@@ -25,10 +27,10 @@ document.getElementById('loot-count').textContent = loot;
 
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  rat.breathe = Math.sin(Date.now() / 300) * 16;
   
+  const float = Math.sin(Date.now() / 350) * 18;
   const x = canvas.width * rat.baseX;
-  const y = canvas.height * rat.baseY + rat.breathe;
+  const y = canvas.height * rat.baseY + float;
 
   ctx.drawImage(rat.img, x, y, rat.size, rat.size);
   requestAnimationFrame(animate);
@@ -37,18 +39,13 @@ function animate() {
 canvas.addEventListener('click', (e) => {
   const ratCenterX = canvas.width * rat.baseX + rat.size / 2;
   const ratCenterY = canvas.height * rat.baseY + rat.size / 2;
-
-  if (Math.hypot(e.clientX - ratCenterX, e.clientY - ratCenterY) < rat.size * 0.7) {
+  
+  if (Math.hypot(e.clientX - ratCenterX, e.clientY - ratCenterY) < rat.size * 0.65) {
     loot += 3;
     document.getElementById('loot-count').textContent = loot;
-    canvas.style.filter = 'brightness(3)';
-    setTimeout(() => canvas.style.filter = '', 250);
+    canvas.style.filter = 'brightness(3) saturate(2)';
+    setTimeout(() => canvas.style.filter = '', 220);
   }
-});
-
-window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
 });
 
 rat.img.onload = animate;
