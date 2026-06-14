@@ -1,62 +1,140 @@
-:root{
-  --bg:#111111;
-  --muted:#dddddd;
-  --accent:#ff0044;
-  --neon:#ff00ff;
-  --neon-strong:#ff0088;
-  --border:#ff0044;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-html,body{height:100vh;margin:0;color:var(--muted);font-family:'Creepster',system-ui,sans-serif;overflow:hidden;}
-body{background:var(--bg);}
+* { margin:0; padding:0; box-sizing:border-box; }
 
-/* Canvas */
-canvas#creature-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;}
+body {
+  background: #0a0a0a;
+  color: #ddd;
+  font-family: system-ui, sans-serif;
+  overflow: hidden;
+  height: 100vh;
+}
+
+#creature-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: -1;
+  image-rendering: pixelated;
+}
+
+/* Neon Punk Style */
+.neon {
+  font-size: 4.5rem;
+  text-transform: uppercase;
+  text-shadow: 0 0 20px #ff00ff,
+               0 0 40px #ff0088,
+               0 0 60px #ff0000;
+  color: white;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  font-size: 2.8rem;
+  text-align: center;
+  margin-top: 4rem;
+}
+
+.menu-item {
+  color: #fff;
+  text-decoration: none;
+  text-shadow: 0 0 15px #ff00ff;
+  transition: all 0.4s;
+  line-height: 1.1;
+}
+
+.menu-item:hover {
+  color: #ff00ff;
+  transform: scale(1.1) translateX(20px);
+  text-shadow: 0 0 30px #ff0088;
+}
+
+.loot-box {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  background: rgba(0,0,0,0.8);
+  border: 3px solid #ff0044;
+  padding: 10px 25px;
+  font-size: 1.5rem;
+}
+
+.progress {
+  background: rgba(0,0,0,0.7);
+  padding: 15px;
+  border: 2px solid #ff00ff;
+  text-align: center;
+}
+
+.bar {
+  height: 14px;
+  background: #333;
+  margin-top: 8px;
+  border: 1px solid #ff00ff;
+}
+
+.fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff00ff, #ff4400);
+  width: 45%;
+}
+
+.hint {
+  text-align: center;
+  font-style: italic;
+  margin-top: 20px;
+  color: #ff8888;
+}
 
 /* Overlay */
-.overlay{position:relative;z-index:10;height:100vh;padding:2rem;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none;}
-.overlay > *{pointer-events:auto;}
+.overlay {
+  position: relative;
+  z-index: 10;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem 0;
+  pointer-events: none;
+}
+.overlay > * { pointer-events: auto; }
 
-/* Header */
-header{display:flex;justify-content:space-between;align-items:center;gap:24px;}
-.neon{margin:0;font-size:4.4rem;line-height:0.92;color:#fff;text-shadow:0 0 10px #ff00ff,0 0 20px #ff00ff,0 0 40px #ff0088;letter-spacing:0.14em;text-transform:uppercase;font-weight:800;}
-
-/* Loot box */
-.loot-box{font-size:0.9rem;text-transform:uppercase;letter-spacing:0.18em;background:rgba(0,0,0,0.7);padding:10px 20px;border:2px solid #ff0044;display:inline-block;color:rgba(255,255,255,0.88);}
-.loot-box span{display:inline-block;margin-left:10px;font-size:1.75rem;font-weight:800;color:#fff;letter-spacing:0.05em;}
-
-/* Menu */
-.menu{display:flex;flex-direction:column;gap:1.2rem;font-size:2.2rem;text-align:center;text-transform:uppercase;max-width:400px;margin:0 auto;}
-.menu-item{display:block;padding:22px 24px;background:rgba(0,0,0,0.42);border:2px solid #ff0044;border-radius:18px;color:#fff;text-decoration:none;line-height:1.2;position:relative;overflow:hidden;transition:all 0.3s;text-shadow:0 0 10px #ff00ff,0 0 20px #ff00ff,0 0 40px #ff0088;font-size:1.45rem;font-weight:800;letter-spacing:0.06em;}
-.menu-item::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,0,255,0.16),rgba(255,68,136,0.08));opacity:0;transition:opacity 0.2s ease;}
-.menu-item:hover{transform:scale(1.05);color:#ff00ff;text-shadow:0 0 20px #ff00ff,0 0 40px #ff0088;border-color:#ff00ff;}
-.menu-item:hover::before{opacity:1;}
-.menu-item span{display:block;margin-top:10px;font-size:0.85rem;color:rgba(255,255,255,0.75);letter-spacing:0.2em;text-transform:uppercase;font-family:system-ui,sans-serif;}
-
-/* Creature info / progress */
-.creature-info{max-width:560px;}
-.progress{padding:10px 20px;background:rgba(0,0,0,0.7);border:2px solid #ff0044;border-radius:24px;font-size:0.95rem;color:rgba(255,255,255,0.85);letter-spacing:0.08em;text-transform:uppercase;}
-.progress strong{color:#fff;}
-.bar{height:12px;background:#333;border:1px solid #ff0044;margin-top:8px;border-radius:2px;overflow:hidden;}
-.fill{height:100%;width:45%;background:linear-gradient(to right,#ff00ff,#ff4400);border-radius:1px;transition:width 0.5s ease;}
-.hint{margin:12px 0 0;padding:12px 18px;background:rgba(0,0,0,0.38);border:1px solid rgba(255,255,255,0.08);border-radius:18px;color:rgba(255,255,255,0.88);font-size:0.95rem;letter-spacing:0.04em;font-family:system-ui,sans-serif;}
+/* Menu item subtitle */
+.menu-item span {
+  display: block;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-top: 6px;
+}
 
 /* Custom cursor */
-body{cursor:none;}
-#cursor-dot{position:fixed;left:0;top:0;width:18px;height:18px;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen;background:radial-gradient(circle,#fff 0%,rgba(255,0,255,0.95) 35%,rgba(255,0,68,0.6) 100%);box-shadow:0 0 18px rgba(255,0,255,0.6),0 0 40px rgba(255,0,68,0.12);transition:width .12s,height .12s,opacity .12s;}
-#cursor-dot.small{width:10px;height:10px;}
-
-/* Responsive */
-@media(max-width:900px){
-  .overlay{padding:1.5rem;}
-  .neon{font-size:3.4rem;}
-  .menu{max-width:100%;}
-  .creature-info{max-width:100%;}
+body { cursor: none; }
+#cursor-dot {
+  position: fixed;
+  left: 0; top: 0;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: screen;
+  background: radial-gradient(circle, #fff 0%, rgba(255,0,255,0.95) 35%, rgba(255,0,68,0.6) 100%);
+  box-shadow: 0 0 18px rgba(255,0,255,0.6), 0 0 40px rgba(255,0,68,0.12);
+  transition: width .12s, height .12s, opacity .12s;
 }
-@media(max-width:640px){
-  .neon{font-size:2.6rem;}
-  .loot-box{font-size:0.85rem;}
-  .menu-item{padding:16px 18px;font-size:1.2rem;}
+#cursor-dot.small { width: 10px; height: 10px; }
+
+/* Creature info */
+.creature-info {
+  width: 100%;
+  max-width: 560px;
+  padding: 0 2rem;
 }
 
 
