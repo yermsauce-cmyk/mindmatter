@@ -32,15 +32,6 @@ body { height: 100vh; overflow: hidden; }
 
 .central-menu {
   position: absolute;
-  top: 38%;
-  left: 48%;
-  transform: translateX(-50%);
-  text-align: left;
-  z-index: 10;
-}
-
-.photo-menu {
-  position: absolute;
   top: 35%;
   left: 48%;
   transform: translateX(-50%);
@@ -62,14 +53,6 @@ body { height: 100vh; overflow: hidden; }
 .menu-link:hover {
   color: #ffcccc;
   transform: translateX(30px);
-}
-
-.menu-link span {
-  display: block;
-  font-size: 0.9rem;
-  color: rgba(255,255,255,0.5);
-  letter-spacing: 0.15em;
-  margin-top: 4px;
 }
 
 .merch-feed {
