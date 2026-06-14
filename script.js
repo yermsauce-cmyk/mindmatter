@@ -15,7 +15,7 @@ window.addEventListener('resize', resize);
 
 const rat = {
   img: new Image(),
-  baseX: 0.22,
+  baseX: 0.12,
   baseY: 0.45,
   size: 480
 };
