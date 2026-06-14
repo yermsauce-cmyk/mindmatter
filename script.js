@@ -41,7 +41,6 @@ canvas.addEventListener('click', (e) => {
   const ratX = canvas.width * rat.baseX;
   const ratY = canvas.height * rat.baseY;
 
-  // Check if click is near the rat
   if (Math.abs(e.clientX - (ratX + rat.size/2)) < rat.size * 0.6 &&
       Math.abs(e.clientY - (ratY + rat.size/2)) < rat.size * 0.7) {
     
@@ -51,7 +50,6 @@ canvas.addEventListener('click', (e) => {
     localStorage.setItem('vexLevel', rat.level);
     document.getElementById('loot-count').textContent = loot;
 
-    // Strong visual feedback
     canvas.style.transition = 'filter 0.1s';
     canvas.style.filter = 'brightness(3) saturate(2.5)';
     setTimeout(() => canvas.style.filter = '', 250);
@@ -59,7 +57,7 @@ canvas.addEventListener('click', (e) => {
 });
 
 // Menu clicks also evolve
-document.querySelectorAll('.menu-item').forEach(item => {
+document.querySelectorAll('.menu-link').forEach(item => {
   item.addEventListener('click', (e) => {
     e.preventDefault();
     rat.level = Math.min(rat.level + 1, 12);

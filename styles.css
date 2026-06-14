@@ -1,141 +1,120 @@
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin:0; padding:0; box-sizing:border-box; }
 
-body {
-  height: 100vh;
-  overflow: hidden;
-  background: #000;
-  color: #ddd;
-  font-family: system-ui, sans-serif;
-}
+body { height: 100vh; overflow: hidden; background: #000; }
 
-.background {
+/* Full Background Image */
+.full-bg {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
   background: url('/mindmatter/assets/background.jpg') no-repeat center center;
   background-size: cover;
-  z-index: -2;
+  z-index: -3;
 }
 
+/* Rat Canvas */
 #rat-canvas {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  z-index: -1;
+  z-index: -2;
   pointer-events: auto;
 }
 
+/* Overlay */
+.overlay {
+  position: relative;
+  z-index: 10;
+  height: 100vh;
+  pointer-events: none;
+}
+.overlay > * { pointer-events: auto; }
+
 /* Neon Sign */
-.mind-matter {
+.neon-sign {
   position: absolute;
   top: 8%;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 3.2rem;
-  color: #ff0044;
-  text-shadow: 0 0 20px #ff00ff,
-               0 0 40px #ff0088;
+  font-size: 3.8rem;
+  color: #ff0022;
+  text-shadow: 0 0 30px #ff00ff,
+               0 0 60px #ff0088;
   font-weight: bold;
-  letter-spacing: 4px;
+  letter-spacing: 6px;
   z-index: 10;
 }
 
-/* Central Menu */
-.central-menu {
+/* Central Menu - closer to photo style */
+.central-text {
   position: absolute;
-  top: 35%;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 38%;
+  left: 52%;
+  transform: translate(-50%, -50%);
   text-align: center;
   z-index: 10;
+  line-height: 1.4;
 }
 
-.menu-item {
+.menu-link {
   display: block;
-  color: white;
-  font-size: 2.1rem;
+  color: #fff;
+  font-size: 2.4rem;
   text-decoration: none;
-  margin: 18px 0;
-  text-shadow: 0 0 15px #ff00ff;
+  margin: 14px 0;
+  text-shadow: 0 0 20px #ff0044;
   transition: all 0.3s;
 }
 
-.menu-item:hover {
+.menu-link:hover {
   color: #ff00ff;
-  text-shadow: 0 0 30px #ff0088;
-  transform: scale(1.08);
+  text-shadow: 0 0 40px #ff00ff;
+  transform: translateX(15px);
 }
 
-.menu-item span {
-  display: block;
-  font-size: 0.85rem;
-  font-weight: 400;
-  color: rgba(255,255,255,0.55);
-  letter-spacing: 0.2em;
-  margin-top: 4px;
-}
-
-/* Right Merch Feed */
+/* Merch Feed */
 .merch-feed {
   position: absolute;
-  top: 15%;
-  right: 5%;
-  width: 220px;
+  top: 12%;
+  right: 4%;
+  width: 240px;
   z-index: 10;
-  background: rgba(0,0,0,0.75);
-  border: 2px solid #ff0044;
-  padding: 15px;
 }
 
-.merch-feed h3 {
+.feed-title {
   color: #ff00ff;
+  font-size: 1.3rem;
   margin-bottom: 12px;
   text-align: center;
-  font-size: 0.85rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  text-shadow: 0 0 10px #ff0088;
 }
 
 .merch-item {
-  background: #111;
-  padding: 10px;
+  background: rgba(20,0,0,0.85);
+  border: 1px solid #660000;
+  padding: 12px 10px;
   margin: 8px 0;
-  border: 1px solid #440000;
-  font-size: 1.1rem;
-  color: rgba(255,255,255,0.7);
-  transition: all 0.3s;
-  cursor: pointer;
+  color: #ddd;
+  font-size: 1.05rem;
 }
 
-.merch-item:hover {
-  color: #fff;
-  border-color: #ff00ff;
-  text-shadow: 0 0 10px #ff00ff;
-}
-
-/* Bottom Info */
-.bottom-info {
+/* Loot Area */
+.loot-area {
   position: absolute;
-  bottom: 8%;
+  bottom: 7%;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 40px;
+  gap: 50px;
   z-index: 10;
 }
 
-.loot, .unlock {
-  background: rgba(0,0,0,0.8);
-  padding: 10px 25px;
+.loot, .next-unlock {
+  background: rgba(0,0,0,0.85);
+  padding: 12px 28px;
   border: 2px solid #ff0044;
-  font-size: 1.4rem;
-}
-
-.loot span {
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: #fff;
-  margin-left: 8px;
+  font-size: 1.45rem;
+  color: #ffdddd;
 }
 
 /* Custom cursor */
@@ -158,10 +137,10 @@ body { cursor: none; }
 /* Responsive */
 @media(max-width:900px) {
   .merch-feed { display: none; }
-  .mind-matter { font-size: 2.2rem; }
-  .menu-item { font-size: 1.6rem; }
-  .bottom-info { gap: 20px; }
-  .loot, .unlock { font-size: 1.1rem; padding: 8px 16px; }
+  .neon-sign { font-size: 2.4rem; }
+  .menu-link { font-size: 1.8rem; }
+  .loot-area { gap: 20px; }
+  .loot, .next-unlock { font-size: 1.1rem; padding: 8px 16px; }
 }
 
 
