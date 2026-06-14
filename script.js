@@ -3,7 +3,7 @@
 // Rat creature with parallax, particles, glow, click-to-evolve
 // ============================================================
 
-const canvas = document.getElementById('creature-bg');
+const canvas = document.getElementById('creature-canvas');
 const ctx = canvas.getContext('2d');
 let w = canvas.width = window.innerWidth;
 let h = canvas.height = window.innerHeight;
@@ -74,8 +74,11 @@ window.addEventListener('click', (e) => {
   creature.ry *= 0.96;
   localStorage.setItem(stateKey, JSON.stringify(creature));
   // update loot
-  const lootEl = document.getElementById('loot-count');
+  const lootEl = document.getElementById('loot');
   if (lootEl) lootEl.textContent = 14 + creature.level * 3;
+  // update progress bar
+  const progressFill = document.getElementById('progress-fill');
+  if (progressFill) progressFill.style.width = Math.min(100, 45 + creature.level * 5) + '%';
   // flash
   canvas.style.filter = 'brightness(1.8) saturate(1.5)';
   setTimeout(() => canvas.style.filter = '', 300);
@@ -230,7 +233,7 @@ document.querySelectorAll('.neon-link').forEach(link => {
     // Evolve on menu click
     creature.level = Math.min(10, (creature.level || 0) + 1);
     localStorage.setItem(stateKey, JSON.stringify(creature));
-    const lootEl = document.getElementById('loot-count');
+    const lootEl = document.getElementById('loot');
     if (lootEl) lootEl.textContent = 14 + creature.level * 3;
     // Spawn particles at link position
     const rect = link.getBoundingClientRect();

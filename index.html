@@ -8,34 +8,31 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Background Canvas for Creature -->
-  <canvas id="creature-bg"></canvas>
+  <!-- Interactive Creature Background -->
+  <canvas id="creature-canvas"></canvas>
 
-  <!-- Main Content Overlay -->
+  <!-- Overlay Content -->
   <div class="overlay">
     <header>
-      <h1 class="neon-title">YERM</h1>
-      <div class="loot-counter">
-        <span>LOOT</span> <strong id="loot-count">14</strong>
+      <h1 class="neon">YERM</h1>
+      <div class="loot-box">
+        LOOT <span id="loot">14</span>
       </div>
     </header>
 
-    <nav class="main-menu">
-      <a href="#" class="neon-link" data-action="gallery">THE CAVE<br><span>Gallery</span></a>
-      <a href="#" class="neon-link" data-action="shop">THE STASH<br><span>Shop</span></a>
-      <a href="#" class="neon-link" data-action="lore">THE LORE<br><span>About</span></a>
-      <a href="#" class="neon-link" data-action="socials">THE GANG<br><span>Socials</span></a>
+    <nav class="menu">
+      <a href="#" class="menu-item" data-section="gallery">THE CAVE<br><span>Gallery</span></a>
+      <a href="#" class="menu-item" data-section="stash">THE STASH<br><span>Shop</span></a>
+      <a href="#" class="menu-item" data-section="lore">THE LORE<br><span>About</span></a>
+      <a href="#" class="menu-item" data-section="gang">THE GANG<br><span>Socials</span></a>
     </nav>
 
-    <div class="progress-container">
-      <p>NEXT UNLOCK: <strong>VEX'S TATTOO</strong></p>
-      <div class="progress-bar">
-        <div class="progress-fill" style="width: 45%;"></div>
+    <div class="creature-info">
+      <div class="progress">
+        NEXT UNLOCK: <strong>VEX'S TATTOO</strong>
+        <div class="bar"><div id="progress-fill" class="fill"></div></div>
       </div>
-    </div>
-
-    <div class="creature-hint">
-      Click Vex to evolve him
+      <p id="hint" class="hint">Click &amp; scroll to awaken Vex...</p>
     </div>
   </div>
 
