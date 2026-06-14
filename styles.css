@@ -1,6 +1,4 @@
-/* Styles are in index.html */
-
-* { margin:0; padding:0; box-sizing:border-box; }
+/* All styles are in index.html */
 body { height: 100vh; overflow: hidden; background: #000; }
 
 .full-bg {
