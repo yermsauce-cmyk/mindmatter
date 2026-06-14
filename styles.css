@@ -38,19 +38,37 @@ body { height: 100vh; overflow: hidden; background: #000; }
   z-index: 10;
 }
 
+.photo-menu {
+  position: absolute;
+  top: 35%;
+  left: 55%;
+  text-align: left;
+  z-index: 10;
+}
+
 .menu-link {
   display: block;
   color: #fff;
-  font-size: 2.35rem;
+  font-size: 2.4rem;
   text-decoration: none;
-  margin: 18px 0;
+  margin: 20px 0;
   text-shadow: 0 0 20px #ff0044;
   transition: all 0.3s;
+  line-height: 1.1;
 }
 
 .menu-link:hover {
   color: #ff00ff;
-  transform: translateX(25px);
+  transform: translateX(20px);
+  text-shadow: 0 0 30px #ff0088;
+}
+
+.menu-link span {
+  display: block;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.15em;
+  margin-top: 4px;
 }
 
 .merch-feed {
