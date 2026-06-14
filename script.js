@@ -9,7 +9,7 @@ let loot = 14;
 
 // Load your creature image (use the one from the image you showed)
 const vexImg = new Image();
-vexImg.src = 'assets/vex-base.png';   // ← Put your image in assets/ folder
+vexImg.src = '/mindmatter/assets/vex-base.png';
 
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
