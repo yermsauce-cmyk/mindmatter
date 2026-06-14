@@ -27,7 +27,7 @@ document.getElementById('loot-count').textContent = loot;
 
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
+
   const float = Math.sin(Date.now() / 350) * 18;
   const x = canvas.width * rat.baseX;
   const y = canvas.height * rat.baseY + float;
@@ -39,7 +39,7 @@ function animate() {
 canvas.addEventListener('click', (e) => {
   const ratCenterX = canvas.width * rat.baseX + rat.size / 2;
   const ratCenterY = canvas.height * rat.baseY + rat.size / 2;
-  
+
   if (Math.hypot(e.clientX - ratCenterX, e.clientY - ratCenterY) < rat.size * 0.65) {
     loot += 3;
     document.getElementById('loot-count').textContent = loot;

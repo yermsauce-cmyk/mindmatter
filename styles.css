@@ -1,8 +1,6 @@
 * { margin:0; padding:0; box-sizing:border-box; }
-
 body { height: 100vh; overflow: hidden; background: #000; }
 
-/* Full Background Image */
 .full-bg {
   position: fixed;
   top: 0; left: 0;
@@ -12,7 +10,6 @@ body { height: 100vh; overflow: hidden; background: #000; }
   z-index: -3;
 }
 
-/* Rat Canvas */
 #rat-canvas {
   position: fixed;
   top: 0; left: 0;
@@ -21,7 +18,6 @@ body { height: 100vh; overflow: hidden; background: #000; }
   pointer-events: auto;
 }
 
-/* Top Neon */
 .neon-sign {
   position: absolute;
   top: 8%;
@@ -34,7 +30,6 @@ body { height: 100vh; overflow: hidden; background: #000; }
   z-index: 10;
 }
 
-/* Menu to the RIGHT of Vex */
 .central-menu {
   position: absolute;
   top: 38%;
@@ -64,13 +59,11 @@ body { height: 100vh; overflow: hidden; background: #000; }
 .menu-link span {
   display: block;
   font-size: 0.85rem;
-  font-weight: 400;
   color: rgba(255,255,255,0.55);
   letter-spacing: 0.2em;
   margin-top: 4px;
 }
 
-/* Far Right Merch */
 .merch-feed {
   position: absolute;
   top: 12%;
@@ -79,10 +72,10 @@ body { height: 100vh; overflow: hidden; background: #000; }
   z-index: 10;
 }
 
-.feed-title { 
-  color: #ff00ff; 
-  margin-bottom: 12px; 
-  text-align: center; 
+.feed-title {
+  color: #ff00ff;
+  margin-bottom: 12px;
+  text-align: center;
   font-size: 1.35rem;
 }
 
@@ -94,7 +87,6 @@ body { height: 100vh; overflow: hidden; background: #000; }
   color: #ddd;
 }
 
-/* Bottom */
 .loot-area {
   position: absolute;
   bottom: 7%;
@@ -110,33 +102,6 @@ body { height: 100vh; overflow: hidden; background: #000; }
   padding: 12px 28px;
   border: 2px solid #ff0044;
   font-size: 1.45rem;
-}
-
-/* Custom cursor */
-body { cursor: none; }
-#cursor-dot {
-  position: fixed;
-  left: 0; top: 0;
-  width: 18px; height: 18px;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  mix-blend-mode: screen;
-  background: radial-gradient(circle, #fff 0%, rgba(255,0,255,0.95) 35%, rgba(255,0,68,0.6) 100%);
-  box-shadow: 0 0 18px rgba(255,0,255,0.6), 0 0 40px rgba(255,0,68,0.12);
-  transition: width .12s, height .12s, opacity .12s;
-}
-#cursor-dot.small { width: 10px; height: 10px; }
-
-/* Responsive */
-@media(max-width:900px) {
-  .merch-feed { display: none; }
-  .neon-sign { font-size: 2.4rem; }
-  .menu-link { font-size: 1.8rem; }
-  .central-menu { left: 50%; text-align: center; }
-  .loot-area { gap: 20px; }
-  .loot, .next-unlock { font-size: 1.1rem; padding: 8px 16px; }
 }
 
 

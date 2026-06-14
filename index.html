@@ -4,30 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MIND MATTER</title>
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700;800&family=Bangers&family=Creepster&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Full Background Image -->
   <div class="full-bg"></div>
-
-  <!-- Interactive Rat Layer -->
   <canvas id="rat-canvas"></canvas>
 
-  <!-- UI Overlay matching the photo -->
   <div class="overlay">
-    <!-- Neon Sign -->
     <div class="neon-sign">MIND MATTER</div>
 
-    <!-- Central Menu - positioned like photo -->
-    <div class="central-text">
+    <div class="central-menu">
       <a href="#" class="menu-link" data-action="cave">THE CAVE <span>Gallery</span></a>
       <a href="#" class="menu-link" data-action="stash">THE STASH <span>Shop</span></a>
       <a href="#" class="menu-link" data-action="lore">THE LORE <span>About</span></a>
       <a href="#" class="menu-link" data-action="gang">THE GANG <span>Socials</span></a>
     </div>
 
-    <!-- Right Merch Feed -->
     <div class="merch-feed">
       <div class="feed-title">MERCHANDISING FEED</div>
       <div class="merch-item">Gothic-Punk Rat T-Shirts</div>
@@ -35,14 +27,12 @@
       <div class="merch-item">Gothic-Punk-Bats Prints</div>
     </div>
 
-    <!-- Bottom Loot -->
     <div class="loot-area">
       <div class="loot">LOOT <span id="loot-count">14</span></div>
       <div class="next-unlock">NEXT UNLOCK: VEX'S TATTOO</div>
     </div>
   </div>
 
-  <div id="cursor-dot" aria-hidden="true"></div>
   <script src="script.js"></script>
 </body>
 </html>
