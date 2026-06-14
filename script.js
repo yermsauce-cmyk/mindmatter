@@ -20,7 +20,7 @@ const rat = {
   size: 480
 };
 
-rat.img.src = 'assets/vex.png';
+rat.img.src = '/mindmatter/assets/vex.png';
 
 let loot = 14;
 document.getElementById('loot-count').textContent = loot;
