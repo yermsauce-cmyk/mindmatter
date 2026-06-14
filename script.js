@@ -15,17 +15,19 @@ window.addEventListener('resize', resize);
 
 const rat = {
   img: new Image(),
-  baseX: 0.28,
-  baseY: 0.42,
-  size: 520,
+  baseX: 0.22,
+  baseY: 0.45,
+  size: 480,
   level: 1
 };
 
-rat.img.src = '/mindmatter/assets/vex.png';
+rat.img.src = 'assets/vex.png';
+
+let loot = 14;
 
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  const float = Math.sin(Date.now() / 420) * 14;
+  const float = Math.sin(Date.now() / 380) * 16;
   const x = canvas.width * rat.baseX;
   const y = canvas.height * rat.baseY + float;
   ctx.drawImage(rat.img, x, y, rat.size, rat.size);
@@ -35,12 +37,14 @@ function animate() {
 canvas.addEventListener('click', (e) => {
   const ratCenterX = canvas.width * rat.baseX + rat.size / 2;
   const ratCenterY = canvas.height * rat.baseY + rat.size / 2;
-  if (Math.hypot(e.clientX - ratCenterX, e.clientY - ratCenterY) < rat.size * 0.68) {
-    rat.level = Math.min(rat.level + 1, 10);
+  
+  if (Math.hypot(e.clientX - ratCenterX, e.clientY - ratCenterY) < rat.size * 0.65) {
+    rat.level = Math.min(rat.level + 1, 12);
     document.getElementById('level').textContent = rat.level;
-    document.getElementById('progress').style.width = (rat.level * 10) + '%';
-    canvas.style.filter = 'brightness(3.2) saturate(2.8)';
-    setTimeout(() => canvas.style.filter = '', 280);
+    document.getElementById('progress').style.width = (rat.level * 8) + '%';
+    
+    canvas.style.filter = 'brightness(3) saturate(2.5)';
+    setTimeout(() => canvas.style.filter = '', 250);
   }
 });
 
