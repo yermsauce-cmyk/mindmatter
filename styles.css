@@ -1,82 +1,69 @@
-* { margin:0; padding:0; box-sizing:border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  background: #0a0a0a;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
   color: #ddd;
   font-family: system-ui, sans-serif;
-  overflow: hidden;
-  height: 100vh;
 }
 
-/* Static Background */
 .background {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  z-index: 0;
-  background: #0a0a0a;
+  background: url('/mindmatter/assets/background.jpg') no-repeat center center;
+  background-size: cover;
+  z-index: -2;
 }
 
-/* Rat Canvas */
 #rat-canvas {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  z-index: 1;
+  z-index: -1;
+  pointer-events: auto;
 }
 
-/* Overlay */
-.overlay {
-  position: relative;
-  z-index: 10;
-  height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  grid-template-columns: 1fr auto;
-  padding: 2rem;
-  gap: 2rem;
-  pointer-events: none;
-}
-.overlay > * { pointer-events: auto; }
-
-/* Top Neon Sign */
+/* Neon Sign */
 .mind-matter {
-  grid-column: 1 / -1;
-  text-align: center;
-  font-size: 1.2rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: #ff00ff;
-  text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff0088;
-  opacity: 0.7;
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 3.2rem;
+  color: #ff0044;
+  text-shadow: 0 0 20px #ff00ff,
+               0 0 40px #ff0088;
+  font-weight: bold;
+  letter-spacing: 4px;
+  z-index: 10;
 }
 
 /* Central Menu */
 .central-menu {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  justify-content: center;
-  align-items: flex-start;
-  padding-left: 2rem;
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 10;
 }
 
 .menu-item {
-  color: #fff;
+  display: block;
+  color: white;
+  font-size: 2.1rem;
   text-decoration: none;
-  font-size: 2.2rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  line-height: 1.1;
+  margin: 18px 0;
   text-shadow: 0 0 15px #ff00ff;
   transition: all 0.3s;
 }
 
 .menu-item:hover {
   color: #ff00ff;
-  transform: scale(1.08) translateX(12px);
-  text-shadow: 0 0 30px #ff0088, 0 0 60px #ff0044;
+  text-shadow: 0 0 30px #ff0088;
+  transform: scale(1.08);
 }
 
 .menu-item span {
@@ -88,32 +75,34 @@ body {
   margin-top: 4px;
 }
 
-/* Right Side Merch Feed */
+/* Right Merch Feed */
 .merch-feed {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  justify-content: center;
-  align-items: flex-end;
-  text-align: right;
-  padding-right: 1rem;
+  position: absolute;
+  top: 15%;
+  right: 5%;
+  width: 220px;
+  z-index: 10;
+  background: rgba(0,0,0,0.75);
+  border: 2px solid #ff0044;
+  padding: 15px;
 }
 
 .merch-feed h3 {
+  color: #ff00ff;
+  margin-bottom: 12px;
+  text-align: center;
   font-size: 0.85rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #ff0044;
-  margin-bottom: 0.5rem;
 }
 
 .merch-item {
-  font-size: 0.95rem;
-  color: rgba(255,255,255,0.6);
-  padding: 8px 16px;
-  border: 1px solid rgba(255,0,68,0.3);
-  border-radius: 8px;
-  background: rgba(0,0,0,0.4);
+  background: #111;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #440000;
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.7);
   transition: all 0.3s;
   cursor: pointer;
 }
@@ -121,27 +110,25 @@ body {
 .merch-item:hover {
   color: #fff;
   border-color: #ff00ff;
-  background: rgba(255,0,255,0.08);
   text-shadow: 0 0 10px #ff00ff;
 }
 
 /* Bottom Info */
 .bottom-info {
-  grid-column: 1 / -1;
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 1rem;
+  gap: 40px;
+  z-index: 10;
 }
 
-.loot {
-  font-size: 1rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  background: rgba(0,0,0,0.7);
+.loot, .unlock {
+  background: rgba(0,0,0,0.8);
+  padding: 10px 25px;
   border: 2px solid #ff0044;
-  padding: 8px 20px;
-  color: rgba(255,255,255,0.8);
+  font-size: 1.4rem;
 }
 
 .loot span {
@@ -149,15 +136,6 @@ body {
   font-weight: 800;
   color: #fff;
   margin-left: 8px;
-}
-
-.unlock {
-  font-size: 0.9rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #ff00ff;
-  text-shadow: 0 0 10px #ff00ff;
-  opacity: 0.8;
 }
 
 /* Custom cursor */
@@ -179,11 +157,11 @@ body { cursor: none; }
 
 /* Responsive */
 @media(max-width:900px) {
-  .overlay { padding: 1.5rem; gap: 1rem; }
-  .central-menu { padding-left: 0; }
-  .menu-item { font-size: 1.6rem; }
   .merch-feed { display: none; }
-  .mind-matter { font-size: 1rem; }
+  .mind-matter { font-size: 2.2rem; }
+  .menu-item { font-size: 1.6rem; }
+  .bottom-info { gap: 20px; }
+  .loot, .unlock { font-size: 1.1rem; padding: 8px 16px; }
 }
 
 
