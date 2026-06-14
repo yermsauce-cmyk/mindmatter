@@ -21,16 +21,7 @@ body { height: 100vh; overflow: hidden; background: #000; }
   pointer-events: auto;
 }
 
-/* Overlay */
-.overlay {
-  position: relative;
-  z-index: 10;
-  height: 100vh;
-  pointer-events: none;
-}
-.overlay > * { pointer-events: auto; }
-
-/* Neon Sign */
+/* Top Neon */
 .neon-sign {
   position: absolute;
   top: 8%;
@@ -38,41 +29,48 @@ body { height: 100vh; overflow: hidden; background: #000; }
   transform: translateX(-50%);
   font-size: 3.8rem;
   color: #ff0022;
-  text-shadow: 0 0 30px #ff00ff,
-               0 0 60px #ff0088;
+  text-shadow: 0 0 30px #ff00ff, 0 0 60px #ff0088;
   font-weight: bold;
-  letter-spacing: 6px;
   z-index: 10;
 }
 
-/* Central Menu - closer to photo style */
-.central-text {
+/* Menu to the RIGHT of Vex */
+.central-menu {
   position: absolute;
   top: 38%;
-  left: 52%;
-  transform: translate(-50%, -50%);
-  text-align: center;
+  left: 48%;
+  transform: translateX(-50%);
+  text-align: left;
   z-index: 10;
-  line-height: 1.4;
+  width: 380px;
 }
 
 .menu-link {
   display: block;
   color: #fff;
-  font-size: 2.4rem;
+  font-size: 2.35rem;
   text-decoration: none;
-  margin: 14px 0;
+  margin: 18px 0;
   text-shadow: 0 0 20px #ff0044;
+  line-height: 1.1;
   transition: all 0.3s;
 }
 
 .menu-link:hover {
   color: #ff00ff;
-  text-shadow: 0 0 40px #ff00ff;
-  transform: translateX(15px);
+  transform: translateX(25px);
 }
 
-/* Merch Feed */
+.menu-link span {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.2em;
+  margin-top: 4px;
+}
+
+/* Far Right Merch */
 .merch-feed {
   position: absolute;
   top: 12%;
@@ -81,24 +79,22 @@ body { height: 100vh; overflow: hidden; background: #000; }
   z-index: 10;
 }
 
-.feed-title {
-  color: #ff00ff;
-  font-size: 1.3rem;
-  margin-bottom: 12px;
-  text-align: center;
-  text-shadow: 0 0 10px #ff0088;
+.feed-title { 
+  color: #ff00ff; 
+  margin-bottom: 12px; 
+  text-align: center; 
+  font-size: 1.35rem;
 }
 
 .merch-item {
   background: rgba(20,0,0,0.85);
   border: 1px solid #660000;
-  padding: 12px 10px;
+  padding: 12px;
   margin: 8px 0;
   color: #ddd;
-  font-size: 1.05rem;
 }
 
-/* Loot Area */
+/* Bottom */
 .loot-area {
   position: absolute;
   bottom: 7%;
@@ -114,7 +110,6 @@ body { height: 100vh; overflow: hidden; background: #000; }
   padding: 12px 28px;
   border: 2px solid #ff0044;
   font-size: 1.45rem;
-  color: #ffdddd;
 }
 
 /* Custom cursor */
@@ -139,6 +134,7 @@ body { cursor: none; }
   .merch-feed { display: none; }
   .neon-sign { font-size: 2.4rem; }
   .menu-link { font-size: 1.8rem; }
+  .central-menu { left: 50%; text-align: center; }
   .loot-area { gap: 20px; }
   .loot, .next-unlock { font-size: 1.1rem; padding: 8px 16px; }
 }
