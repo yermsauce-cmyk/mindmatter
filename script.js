@@ -11,9 +11,9 @@ canvas.height = window.innerHeight;
 
 const rat = {
   img: new Image(),
-  x: canvas.width * 0.22,
-  y: canvas.height * 0.42,
-  size: 380,
+  baseX: 0.22,
+  baseY: 0.42,
+  size: 420,
   level: parseInt(localStorage.getItem('vexLevel')) || 0,
   breathe: 0
 };
@@ -26,29 +26,35 @@ document.getElementById('loot-count').textContent = loot;
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  rat.breathe = Math.sin(Date.now() / 300) * 12;
+  rat.breathe = Math.sin(Date.now() / 280) * 15;
 
-  ctx.drawImage(rat.img, 
-    rat.x, 
-    rat.y + rat.breathe, 
-    rat.size, 
-    rat.size);
+  const x = canvas.width * rat.baseX;
+  const y = canvas.height * rat.baseY + rat.breathe;
+
+  ctx.drawImage(rat.img, x, y, rat.size, rat.size);
 
   requestAnimationFrame(animate);
 }
 
-// Click on rat to evolve
+// Click to interact with rat
 canvas.addEventListener('click', (e) => {
-  // Only evolve if click is near the rat
-  if (e.clientX > rat.x - 100 && e.clientX < rat.x + rat.size + 100) {
+  const ratX = canvas.width * rat.baseX;
+  const ratY = canvas.height * rat.baseY;
+
+  // Check if click is near the rat
+  if (Math.abs(e.clientX - (ratX + rat.size/2)) < rat.size * 0.6 &&
+      Math.abs(e.clientY - (ratY + rat.size/2)) < rat.size * 0.7) {
+    
     rat.level = Math.min(rat.level + 1, 12);
     loot += 3;
+    
     localStorage.setItem('vexLevel', rat.level);
     document.getElementById('loot-count').textContent = loot;
 
-    // Flash feedback
-    canvas.style.filter = 'brightness(2.5)';
-    setTimeout(() => canvas.style.filter = '', 200);
+    // Strong visual feedback
+    canvas.style.transition = 'filter 0.1s';
+    canvas.style.filter = 'brightness(3) saturate(2.5)';
+    setTimeout(() => canvas.style.filter = '', 250);
   }
 });
 
@@ -68,4 +74,7 @@ window.addEventListener('resize', () => {
   canvas.height = window.innerHeight;
 });
 
-rat.img.onload = animate;
+rat.img.onload = () => {
+  animate();
+  console.log("🦇 Vex is now interactive!");
+};
