@@ -89,16 +89,22 @@
             align-items: center;
         }
 
-        .merch-box {
-            width: 83%;
-            height: 18.5%;
-            background: rgba(162, 0, 255, 0.0);
-            cursor: pointer;
-            transition: background 0.3s;
+        .merch-box { 
+            width: 83%; 
+            height: 18.5%; 
+            background: rgba(162, 0, 255, 0.0); 
+            cursor: pointer; 
+            border: 1px solid transparent;
+            transition: all 0.3s ease-in-out;
         }
-        .merch-box:hover {
-            background: rgba(162, 0, 255, 0.15);
-            outline: 1px solid #a200ff;
+        .merch-box:hover { 
+            background: rgba(162, 0, 255, 0.15); 
+            border: 1px solid #a200ff;
+            box-shadow: 0 0 10px #a200ff, 
+                        0 0 25px rgba(162, 0, 255, 0.6), 
+                        inset 0 0 15px rgba(162, 0, 255, 0.3);
+            transform: scale(1.03) translateX(-5px);
+            z-index: 20;
         }
     </style>
 </head>
