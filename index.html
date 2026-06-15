@@ -6,106 +6,157 @@
     <title>Mind Matter</title>
     <style>
         * { box-sizing: border-box; }
+        
         body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            overflow: hidden; background-color: #000;
-            display: flex; justify-content: center; align-items: center;
-            cursor: crosshair;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        #cursor-aura {
-            position: fixed; top: 0; left: 0; width: 150px; height: 150px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,0,60,0.6) 0%, rgba(162,0,255,0.3) 40%, rgba(0,0,0,0) 70%);
-            pointer-events: none; mix-blend-mode: screen; filter: blur(12px);
-            z-index: 9999; will-change: transform;
-        }
+
         .wrapper {
-            position: relative; width: 100vw; height: 56.25vw;
-            max-height: 100vh; max-width: 177.78vh;
-            background-image: url('assets/image_2.png');
-            background-size: 100% 100%; background-repeat: no-repeat;
-            background-position: center; box-shadow: 0 0 50px rgba(0,0,0,0.9) inset;
+            position: relative;
+            width: 100vw;
+            height: 56.25vw;
+            max-height: 100vh;
+            max-width: 177.78vh;
+            background-image: url('assets/image.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            box-shadow: 0 0 50px rgba(0,0,0,0.9) inset;
         }
+
         #vex-layer {
-            position: absolute; width: 28%; z-index: 10;
-            pointer-events: none; transform: translate(-50%, -50%); will-change: transform;
+            position: absolute;
+            width: 45%;
+            z-index: 10;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            will-change: transform;
+            left: 28%;
+            top: 50%;
         }
+
         #vex-image {
-            width: 100%; height: auto; pointer-events: auto; cursor: pointer;
-            filter: drop-shadow(0 0 15px rgba(162,0,255,0.4));
+            width: 100%;
+            height: auto;
+            pointer-events: auto;
+            cursor: pointer;
+            filter: drop-shadow(0 0 15px rgba(162, 0, 255, 0.4));
             animation: levitate 4s ease-in-out infinite alternate;
             transition: filter 0.2s ease, transform 0.1s ease;
         }
+
         @keyframes levitate {
             0% { transform: translateY(0px) rotate(0deg); }
             50% { transform: translateY(-15px) rotate(1deg); }
             100% { transform: translateY(5px) rotate(-1deg); }
         }
+
         .hitbox {
-            position: absolute; cursor: pointer; background: rgba(255,0,0,0.0);
+            position: absolute;
+            cursor: pointer;
+            background: rgba(255, 0, 0, 0.0);
             transition: background 0.3s ease;
         }
-        .hitbox:hover { background: rgba(255,0,60,0.08); box-shadow: 0 0 20px rgba(255,0,60,0.2); }
-        .link-cave { top: 24%; left: 60%; width: 20%; height: 12%; }
+
+        .hitbox:hover {
+            background: rgba(255, 0, 60, 0.08);
+            box-shadow: 0 0 20px rgba(255, 0, 60, 0.2);
+        }
+
+        .link-cave  { top: 24%; left: 60%; width: 20%; height: 12%; }
         .link-stash { top: 39%; left: 60%; width: 20%; height: 12%; }
-        .link-lore { top: 54%; left: 60%; width: 20%; height: 12%; }
-        .link-gang { top: 69%; left: 60%; width: 20%; height: 12%; }
+        .link-lore  { top: 54%; left: 60%; width: 20%; height: 12%; }
+        .link-gang  { top: 69%; left: 60%; width: 20%; height: 12%; }
+
         .merch-feed-zone {
-            position: absolute; right: 0; top: 0; width: 11.5%; height: 100%;
-            display: flex; flex-direction: column; padding-top: 7%; gap: 3.5%; align-items: center;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 11.5%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding-top: 7%;
+            gap: 3.5%;
+            align-items: center;
         }
+
         .merch-box {
-            width: 83%; height: 18.5%; background: rgba(162,0,255,0.0);
-            cursor: pointer; transition: background 0.3s;
+            width: 83%;
+            height: 18.5%;
+            background: rgba(162, 0, 255, 0.0);
+            cursor: pointer;
+            transition: background 0.3s;
         }
-        .merch-box:hover { background: rgba(162,0,255,0.15); outline: 1px solid #a200ff; }
+        .merch-box:hover {
+            background: rgba(162, 0, 255, 0.15);
+            outline: 1px solid #a200ff;
+        }
     </style>
 </head>
 <body>
-    <div id="cursor-aura"></div>
+
     <div class="wrapper">
+        
         <div id="vex-layer">
-            <img id="vex-image" src="assets/image.png" alt="Vex">
+            <img id="vex-image" src="assets/image_2.png" alt="Vex">
         </div>
+
         <a href="#gallery" class="hitbox link-cave" title="The Cave Gallery"></a>
         <a href="#shop" class="hitbox link-stash" title="The Stash Shop"></a>
         <a href="#about" class="hitbox link-lore" title="The Lore About"></a>
         <a href="#socials" class="hitbox link-gang" title="The Gang Socials"></a>
+
         <div class="merch-feed-zone">
             <div class="merch-box" onclick="location.href='#tshirts'" title="Rat T-Shirts"></div>
             <div class="merch-box" onclick="location.href='#patches'" title="Gothic Patches"></div>
             <div class="merch-box" onclick="location.href='#bats'" title="Punk Bat Prints"></div>
             <div class="merch-box" onclick="location.href='#secret'" title="Mystery Item"></div>
         </div>
+
     </div>
+
     <script>
         const vexLayer = document.getElementById('vex-layer');
         const vexImage = document.getElementById('vex-image');
-        const cursorAura = document.getElementById('cursor-aura');
+        
         let mouseX = window.innerWidth / 4;
         let mouseY = window.innerHeight / 2;
-        let vexX = window.innerWidth / 4;
-        let vexY = window.innerHeight / 2;
-        let auraX = window.innerWidth / 2;
-        let auraY = window.innerHeight / 2;
-        window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+        let currentX = window.innerWidth / 4;
+        let currentY = window.innerHeight / 2;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
         function fluidTracking() {
-            vexX += (mouseX - vexX) * 0.04;
-            vexY += (mouseY - vexY) * 0.04;
-            vexLayer.style.left = `${vexX}px`;
-            vexLayer.style.top = `${vexY}px`;
-            auraX += (mouseX - auraX) * 0.25;
-            auraY += (mouseY - auraY) * 0.25;
-            cursorAura.style.transform = `translate(${auraX - 75}px, ${auraY - 75}px)`;
+            currentX += (mouseX - currentX) * 0.04;
+            currentY += (mouseY - currentY) * 0.04;
+
+            vexLayer.style.left = `${currentX}px`;
+            vexLayer.style.top = `${currentY}px`;
+
             requestAnimationFrame(fluidTracking);
         }
         fluidTracking();
+
         vexImage.addEventListener('click', (e) => {
             e.stopPropagation();
+            
             vexImage.style.filter = 'drop-shadow(0 0 35px #a200ff) hue-rotate(45deg) brightness(1.3)';
             vexImage.style.transform = 'scale(1.1) rotate(-8deg)';
+            
             setTimeout(() => {
-                vexImage.style.filter = 'drop-shadow(0 0 15px rgba(162,0,255,0.4))';
+                vexImage.style.filter = 'drop-shadow(0 0 15px rgba(162, 0, 255, 0.4))';
                 vexImage.style.transform = 'scale(1) rotate(0deg)';
             }, 250);
         });
