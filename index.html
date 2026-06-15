@@ -1,113 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MIND MATTER</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { height: 100vh; overflow: hidden; background: #0a0a0a; font-family: system-ui, sans-serif; }
-    .scene { position: relative; width: 100vw; height: 100vh; background: url('assets/true_background.png') center/cover no-repeat; z-index: 1; }
-    #rat-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: auto; }
-    .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; }
-    .neon-sign { position: absolute; top: 8%; left: 50%; transform: translateX(-50%); font-size: 3.8rem; color: #ff0044; text-shadow: 0 0 30px #ff00ff, 0 0 60px #ff0088; font-weight: bold; letter-spacing: 4px; pointer-events: none; }
-    .menu { position: absolute; top: 32%; left: 52%; transform: translateX(-50%); text-align: left; pointer-events: auto; }
-    .menu a { display: block; color: white; font-size: 2.35rem; font-weight: bold; text-decoration: none; margin: 18px 0; text-shadow: 3px 3px 12px #000; transition: all 0.3s; }
-    .menu a:hover { color: #ff00ff; transform: translateX(30px); }
-    .merch-feed { position: absolute; top: 12%; right: 4%; width: 240px; pointer-events: auto; }
-    .feed-title { color: #ff00ff; font-size: 1.4rem; text-align: center; margin-bottom: 15px; }
-    .merch-item { background: rgba(0,0,0,0.8); border: 1px solid #660000; padding: 14px 12px; margin: 10px 0; color: #ddd; cursor: pointer; transition: all 0.3s; }
-    .merch-item:hover { background: rgba(255, 0, 60, 0.25); border-color: #ff00ff; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mind Matter</title>
+    <style>
+        * { box-sizing: border-box; }
+        
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .wrapper {
+            position: relative;
+            width: 100vw;
+            height: 56.25vw;
+            max-height: 100vh;
+            max-width: 177.78vh;
+            background-image: url('assets/true_background.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            box-shadow: 0 0 50px rgba(0,0,0,0.9) inset;
+        }
+
+        #vex-layer {
+            position: absolute;
+            width: 45%;
+            z-index: 10;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            will-change: transform;
+            left: 28%;
+            top: 50%;
+        }
+
+        #vex-image {
+            width: 100%;
+            height: auto;
+            pointer-events: auto;
+            cursor: pointer;
+            filter: drop-shadow(0 0 15px rgba(162, 0, 255, 0.4));
+            animation: levitate 4s ease-in-out infinite alternate;
+            transition: filter 0.2s ease, transform 0.1s ease;
+        }
+
+        @keyframes levitate {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(1deg); }
+            100% { transform: translateY(5px) rotate(-1deg); }
+        }
+
+        .hitbox {
+            position: absolute;
+            cursor: pointer;
+            background: rgba(255, 0, 0, 0.0);
+            transition: background 0.3s ease;
+        }
+
+        .hitbox:hover {
+            background: rgba(255, 0, 60, 0.08);
+            box-shadow: 0 0 20px rgba(255, 0, 60, 0.2);
+        }
+
+        .link-cave  { top: 24%; left: 60%; width: 20%; height: 12%; }
+        .link-stash { top: 39%; left: 60%; width: 20%; height: 12%; }
+        .link-lore  { top: 54%; left: 60%; width: 20%; height: 12%; }
+        .link-gang  { top: 69%; left: 60%; width: 20%; height: 12%; }
+
+        .merch-feed-zone {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 11.5%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding-top: 7%;
+            gap: 3.5%;
+            align-items: center;
+        }
+
+        .merch-box {
+            width: 83%;
+            height: 18.5%;
+            background: rgba(162, 0, 255, 0.0);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .merch-box:hover {
+            background: rgba(162, 0, 255, 0.15);
+            outline: 1px solid #a200ff;
+        }
+    </style>
 </head>
 <body>
-  <div class="scene">
-    <canvas id="rat-canvas"></canvas>
-  </div>
-  <div class="overlay">
-    <div class="neon-sign">MIND MATTER</div>
-    <nav class="menu">
-      <a href="#gallery">THE CAVE <span style="font-size:1.1rem;opacity:0.8;">Gallery</span></a>
-      <a href="#shop">THE STASH <span style="font-size:1.1rem;opacity:0.8;">Shop</span></a>
-      <a href="#about">THE LORE <span style="font-size:1.1rem;opacity:0.8;">About</span></a>
-      <a href="#socials">THE GANG <span style="font-size:1.1rem;opacity:0.8;">Socials</span></a>
-    </nav>
-    <div class="merch-feed">
-      <div class="feed-title">MERCHANDISING FEED</div>
-      <div class="merch-item">Gothic-Punk Rat T-Shirts</div>
-      <div class="merch-item">Gothic Patches Prints</div>
-      <div class="merch-item">Gothic-Punk-Bats Prints</div>
+
+    <div class="wrapper">
+        
+        <div id="vex-layer">
+            <img id="vex-image" src="assets/image_2.png" alt="Vex">
+        </div>
+
+        <a href="#gallery" class="hitbox link-cave" title="The Cave Gallery"></a>
+        <a href="#shop" class="hitbox link-stash" title="The Stash Shop"></a>
+        <a href="#about" class="hitbox link-lore" title="The Lore About"></a>
+        <a href="#socials" class="hitbox link-gang" title="The Gang Socials"></a>
+
+        <div class="merch-feed-zone">
+            <div class="merch-box" onclick="location.href='#tshirts'" title="Rat T-Shirts"></div>
+            <div class="merch-box" onclick="location.href='#patches'" title="Gothic Patches"></div>
+            <div class="merch-box" onclick="location.href='#bats'" title="Punk Bat Prints"></div>
+            <div class="merch-box" onclick="location.href='#secret'" title="Mystery Item"></div>
+        </div>
+
     </div>
-  </div>
 
-  <script>
-    // --- VEX CANVAS ANIMATION ---
-    const canvas = document.getElementById('rat-canvas');
-    const ctx = canvas.getContext('2d');
-    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    resize();
-    window.addEventListener('resize', resize);
+    <script>
+        // Cursor trail system
+        const trails = [];
+        const trailCount = 20;
+        
+        // Create trail elements
+        for (let i = 0; i < trailCount; i++) {
+            const trail = document.createElement('div');
+            trail.style.cssText = `
+                position: fixed;
+                width: ${12 - i * 0.4}px;
+                height: ${12 - i * 0.4}px;
+                border-radius: 50%;
+                background: radial-gradient(circle, 
+                    rgba(255, 0, 60, ${0.8 - i * 0.03}) 0%, 
+                    rgba(162, 0, 255, ${0.6 - i * 0.02}) 50%, 
+                    rgba(0, 0, 0, 0) 100%);
+                pointer-events: none;
+                z-index: 9999;
+                mix-blend-mode: screen;
+                filter: blur(${2 + i * 0.3}px);
+                transition: opacity 0.1s;
+            `;
+            document.body.appendChild(trail);
+            trails.push({ el: trail, x: 0, y: 0 });
+        }
 
-    const rat = { img: new Image(), baseX: 0.24, baseY: 0.48, size: 520 };
-    rat.img.src = 'assets/vex.png';
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let vexX = window.innerWidth / 4;
+        let vexY = window.innerHeight / 2;
 
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const float = Math.sin(Date.now() / 400) * 18;
-      const x = canvas.width * rat.baseX;
-      const y = canvas.height * rat.baseY + float;
-      ctx.drawImage(rat.img, x, y, rat.size, rat.size);
-      requestAnimationFrame(animate);
-    }
-    rat.img.onload = animate;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
 
-    canvas.addEventListener('click', (e) => {
-      const cx = canvas.width * rat.baseX + rat.size / 2;
-      const cy = canvas.height * rat.baseY + rat.size / 2;
-      if (Math.hypot(e.clientX - cx, e.clientY - cy) < rat.size * 0.7) {
-        canvas.style.filter = 'brightness(3) saturate(2.8)';
-        setTimeout(() => canvas.style.filter = '', 280);
-      }
-    });
+        // Vex follows cursor with smooth lag
+        const vexLayer = document.getElementById('vex-layer');
+        const vexImage = document.getElementById('vex-image');
 
-    // --- NEON PARTICLE EXPLOSION ---
-    function createExplosion(x, y) {
-      const colors = ['#ff003c','#ff0066','#ff0099','#ff00cc','#ff00ff','#a200ff','#8000ff','#6000ff','#ff3366','#ff6699','#ff99cc','#ffccff','#cc00ff','#ff0000','#ff4400','#ffffff'];
-      for (let i = 0; i < 50; i++) {
-        const p = document.createElement('div');
-        const size = Math.random() * 18 + 6;
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        const angle = (Math.PI * 2 * i) / 50 + Math.random() * 0.8;
-        const vel = Math.random() * 180 + 80;
-        const vx = Math.cos(angle) * vel;
-        const vy = Math.sin(angle) * vel;
-        p.style.cssText = `position:fixed;width:${size}px;height:${size}px;border-radius:50%;background:radial-gradient(circle,#fff 0%,${color} 40%,transparent 70%);pointer-events:none;z-index:10000;left:${x}px;top:${y}px;box-shadow:0 0 ${size}px ${color},0 0 ${size*3}px ${color};mix-blend-mode:screen;`;
-        document.body.appendChild(p);
-        let px = x, py = y, op = 1, sc = 1.5;
-        (function anim() {
-          px += vx * 0.016; py += vy * 0.016 + 3; op -= 0.015; sc -= 0.008;
-          p.style.left = px+'px'; p.style.top = py+'px'; p.style.opacity = Math.max(0,op); p.style.transform = 'scale('+Math.max(0,sc)+')';
-          if (op > 0) requestAnimationFrame(anim); else p.remove();
-        })();
-      }
-    }
+        function animate() {
+            // Update trails
+            for (let i = trails.length - 1; i > 0; i--) {
+                trails[i].x = trails[i - 1].x;
+                trails[i].y = trails[i - 1].y;
+            }
+            trails[0].x = mouseX;
+            trails[0].y = mouseY;
 
-    // --- CLICK HANDLERS FOR MENU ---
-    document.querySelectorAll('.menu a').forEach(link => {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        const rect = this.getBoundingClientRect();
-        createExplosion(rect.left + rect.width/2, rect.top + rect.height/2);
-      });
-    });
+            trails.forEach((trail, i) => {
+                trail.el.style.left = `${trail.x - (12 - i * 0.4) / 2}px`;
+                trail.el.style.top = `${trail.y - (12 - i * 0.4) / 2}px`;
+                trail.el.style.opacity = `${1 - i * 0.05}`;
+            });
 
-    document.querySelectorAll('.merch-item').forEach(item => {
-      item.addEventListener('click', function(e) {
-        e.preventDefault();
-        const rect = this.getBoundingClientRect();
-        createExplosion(rect.left + rect.width/2, rect.top + rect.height/2);
-      });
-    });
-  </script>
+            // Vex follows cursor with lag
+            vexX += (mouseX - vexX) * 0.05;
+            vexY += (mouseY - vexY) * 0.05;
+            vexLayer.style.left = `${vexX}px`;
+            vexLayer.style.top = `${vexY}px`;
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        vexImage.addEventListener('click', (e) => {
+            e.stopPropagation();
+            vexImage.style.filter = 'drop-shadow(0 0 35px #a200ff) hue-rotate(45deg) brightness(1.3)';
+            vexImage.style.transform = 'scale(1.1) rotate(-8deg)';
+            
+            setTimeout(() => {
+                vexImage.style.filter = 'drop-shadow(0 0 15px rgba(162, 0, 255, 0.4))';
+                vexImage.style.transform = 'scale(1) rotate(0deg)';
+            }, 250);
+        });
+    </script>
 </body>
 </html>
