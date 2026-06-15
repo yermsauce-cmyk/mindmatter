@@ -125,8 +125,71 @@
     </div>
 
     <script>
-        const vexImage = document.getElementById('vex-image');
+        // Cursor trail system
+        const trails = [];
+        const trailCount = 20;
         
+        // Create trail elements
+        for (let i = 0; i < trailCount; i++) {
+            const trail = document.createElement('div');
+            trail.style.cssText = `
+                position: fixed;
+                width: ${12 - i * 0.4}px;
+                height: ${12 - i * 0.4}px;
+                border-radius: 50%;
+                background: radial-gradient(circle, 
+                    rgba(255, 0, 60, ${0.8 - i * 0.03}) 0%, 
+                    rgba(162, 0, 255, ${0.6 - i * 0.02}) 50%, 
+                    rgba(0, 0, 0, 0) 100%);
+                pointer-events: none;
+                z-index: 9999;
+                mix-blend-mode: screen;
+                filter: blur(${2 + i * 0.3}px);
+                transition: opacity 0.1s;
+            `;
+            document.body.appendChild(trail);
+            trails.push({ el: trail, x: 0, y: 0 });
+        }
+
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let vexX = window.innerWidth / 4;
+        let vexY = window.innerHeight / 2;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        // Vex follows cursor with smooth lag
+        const vexLayer = document.getElementById('vex-layer');
+        const vexImage = document.getElementById('vex-image');
+
+        function animate() {
+            // Update trails
+            for (let i = trails.length - 1; i > 0; i--) {
+                trails[i].x = trails[i - 1].x;
+                trails[i].y = trails[i - 1].y;
+            }
+            trails[0].x = mouseX;
+            trails[0].y = mouseY;
+
+            trails.forEach((trail, i) => {
+                trail.el.style.left = `${trail.x - (12 - i * 0.4) / 2}px`;
+                trail.el.style.top = `${trail.y - (12 - i * 0.4) / 2}px`;
+                trail.el.style.opacity = `${1 - i * 0.05}`;
+            });
+
+            // Vex follows cursor with lag
+            vexX += (mouseX - vexX) * 0.05;
+            vexY += (mouseY - vexY) * 0.05;
+            vexLayer.style.left = `${vexX}px`;
+            vexLayer.style.top = `${vexY}px`;
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+
         vexImage.addEventListener('click', (e) => {
             e.stopPropagation();
             vexImage.style.filter = 'drop-shadow(0 0 35px #a200ff) hue-rotate(45deg) brightness(1.3)';
