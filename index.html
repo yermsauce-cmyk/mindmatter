@@ -110,10 +110,10 @@
             <img id="vex-image" src="assets/image_2.png" alt="Vex">
         </div>
 
-        <a href="#gallery" class="hitbox link-cave" title="The Cave Gallery"></a>
-        <a href="#shop" class="hitbox link-stash" title="The Stash Shop"></a>
-        <a href="#about" class="hitbox link-lore" title="The Lore About"></a>
-        <a href="#socials" class="hitbox link-gang" title="The Gang Socials"></a>
+        <a href="#gallery" class="hitbox link-cave" title="The Cave Gallery">THE CAVE</a>
+        <a href="#shop" class="hitbox link-stash" title="The Stash Shop">THE STASH</a>
+        <a href="#about" class="hitbox link-lore" title="The Lore About">THE LORE</a>
+        <a href="#socials" class="hitbox link-gang" title="The Gang Socials">THE GANG</a>
 
         <div class="merch-feed-zone">
             <div class="merch-box" onclick="location.href='#tshirts'" title="Rat T-Shirts"></div>
@@ -206,17 +206,18 @@
             const colors = [
                 '#ff003c', '#ff0066', '#ff0099', '#ff00cc', '#ff00ff',
                 '#a200ff', '#8000ff', '#6000ff', '#4000ff', '#2000ff',
-                '#ff3366', '#ff6699', '#ff99cc', '#ffccff', '#cc00ff'
+                '#ff3366', '#ff6699', '#ff99cc', '#ffccff', '#cc00ff',
+                '#ff0000', '#ff4400', '#ff8800', '#ffcc00', '#ffffff'
             ];
             
-            const particleCount = 40;
+            const particleCount = 60;
             
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
-                const size = Math.random() * 12 + 4;
+                const size = Math.random() * 20 + 8;
                 const color = colors[Math.floor(Math.random() * colors.length)];
-                const angle = (Math.PI * 2 * i) / particleCount + Math.random() * 0.5;
-                const velocity = Math.random() * 150 + 80;
+                const angle = (Math.PI * 2 * i) / particleCount + Math.random() * 0.8;
+                const velocity = Math.random() * 200 + 100;
                 const vx = Math.cos(angle) * velocity;
                 const vy = Math.sin(angle) * velocity;
                 
@@ -225,12 +226,12 @@
                     width: ${size}px;
                     height: ${size}px;
                     border-radius: 50%;
-                    background: radial-gradient(circle, ${color} 0%, transparent 70%);
+                    background: radial-gradient(circle, #ffffff 0%, ${color} 40%, transparent 70%);
                     pointer-events: none;
                     z-index: 10000;
                     left: ${x}px;
                     top: ${y}px;
-                    box-shadow: 0 0 ${size * 2}px ${color}, 0 0 ${size * 4}px ${color};
+                    box-shadow: 0 0 ${size}px ${color}, 0 0 ${size * 3}px ${color}, 0 0 ${size * 5}px ${color};
                     mix-blend-mode: screen;
                 `;
                 document.body.appendChild(particle);
@@ -238,18 +239,18 @@
                 let posX = x;
                 let posY = y;
                 let opacity = 1;
-                let scale = 1;
+                let scale = 1.5;
                 
                 function animateParticle() {
                     posX += vx * 0.016;
-                    posY += vy * 0.016 + 2;
-                    opacity -= 0.02;
-                    scale -= 0.01;
+                    posY += vy * 0.016 + 3;
+                    opacity -= 0.015;
+                    scale -= 0.008;
                     
                     particle.style.left = `${posX}px`;
                     particle.style.top = `${posY}px`;
-                    particle.style.opacity = opacity;
-                    particle.style.transform = `scale(${scale})`;
+                    particle.style.opacity = Math.max(0, opacity);
+                    particle.style.transform = `scale(${Math.max(0, scale)})`;
                     
                     if (opacity > 0) {
                         requestAnimationFrame(animateParticle);
