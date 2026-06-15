@@ -1,142 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mind Matter</title>
-    <style>
-        * { box-sizing: border-box; }
-        
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MIND MATTER</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      height: 100vh;
+      overflow: hidden;
+      background: #0a0a0a;
+      font-family: system-ui, sans-serif;
+    }
 
-        .wrapper {
-            position: relative;
-            width: 100vw;
-            height: 56.25vw;
-            max-height: 100vh;
-            max-width: 177.78vh;
-            background-image: url('assets/true_background.png');
-            background-size: 100% 100%;
-            background-repeat: no-repeat;
-            background-position: center;
-            box-shadow: 0 0 50px rgba(0,0,0,0.9) inset;
-        }
+    .scene {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: url('assets/background.jpg') center/cover no-repeat;
+      z-index: 1;
+    }
 
-        #vex-layer {
-            position: absolute;
-            width: 45%;
-            z-index: 10;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            will-change: transform;
-            left: 28%;
-            top: 50%;
-        }
+    #rat-canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 2;
+      pointer-events: auto;
+    }
 
-        #vex-image {
-            width: 100%;
-            height: auto;
-            pointer-events: auto;
-            cursor: pointer;
-            filter: drop-shadow(0 0 15px rgba(162, 0, 255, 0.4));
-            animation: levitate 4s ease-in-out infinite alternate;
-            transition: filter 0.2s ease, transform 0.1s ease;
-        }
+    .overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 3;
+      pointer-events: none;
+    }
 
-        @keyframes levitate {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(1deg); }
-            100% { transform: translateY(5px) rotate(-1deg); }
-        }
+    .neon-sign {
+      position: absolute;
+      top: 8%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 3.8rem;
+      color: #ff0044;
+      text-shadow: 0 0 30px #ff00ff, 0 0 60px #ff0088;
+      font-weight: bold;
+      letter-spacing: 4px;
+      pointer-events: none;
+    }
 
-        .hitbox {
-            position: absolute;
-            cursor: pointer;
-            background: rgba(255, 0, 0, 0.0);
-            transition: background 0.3s ease;
-        }
+    .menu {
+      position: absolute;
+      top: 32%;
+      left: 52%;
+      transform: translateX(-50%);
+      text-align: left;
+      pointer-events: auto;
+    }
 
-        .hitbox:hover {
-            background: rgba(255, 0, 60, 0.08);
-            box-shadow: 0 0 20px rgba(255, 0, 60, 0.2);
-        }
+    .menu a {
+      display: block;
+      color: white;
+      font-size: 2.35rem;
+      font-weight: bold;
+      text-decoration: none;
+      margin: 18px 0;
+      text-shadow: 3px 3px 12px #000;
+      transition: all 0.3s;
+    }
 
-        .link-cave  { top: 24%; left: 60%; width: 20%; height: 12%; }
-        .link-stash { top: 39%; left: 60%; width: 20%; height: 12%; }
-        .link-lore  { top: 54%; left: 60%; width: 20%; height: 12%; }
-        .link-gang  { top: 69%; left: 60%; width: 20%; height: 12%; }
+    .menu a:hover {
+      color: #ff00ff;
+      transform: translateX(30px);
+    }
 
-        .merch-feed-zone {
-            position: absolute;
-            right: 0;
-            top: 0;
-            width: 11.5%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            padding-top: 7%;
-            gap: 3.5%;
-            align-items: center;
-        }
+    .merch-feed {
+      position: absolute;
+      top: 12%;
+      right: 4%;
+      width: 240px;
+      pointer-events: auto;
+    }
 
-        .merch-box {
-            width: 83%;
-            height: 18.5%;
-            background: rgba(162, 0, 255, 0.0);
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .merch-box:hover {
-            background: rgba(162, 0, 255, 0.15);
-            outline: 1px solid #a200ff;
-        }
-    </style>
+    .feed-title {
+      color: #ff00ff;
+      font-size: 1.4rem;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .merch-item {
+      background: rgba(0,0,0,0.8);
+      border: 1px solid #660000;
+      padding: 14px 12px;
+      margin: 10px 0;
+      color: #ddd;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .merch-item:hover {
+      background: rgba(255, 0, 60, 0.25);
+      border-color: #ff00ff;
+    }
+  </style>
 </head>
 <body>
+  <div class="scene">
+    <canvas id="rat-canvas"></canvas>
+  </div>
 
-    <div class="wrapper">
-        
-        <div id="vex-layer">
-            <img id="vex-image" src="assets/image_2.png" alt="Vex">
-        </div>
+  <div class="overlay">
+    <div class="neon-sign">MIND MATTER</div>
 
-        <a href="#gallery" class="hitbox link-cave" title="The Cave Gallery"></a>
-        <a href="#shop" class="hitbox link-stash" title="The Stash Shop"></a>
-        <a href="#about" class="hitbox link-lore" title="The Lore About"></a>
-        <a href="#socials" class="hitbox link-gang" title="The Gang Socials"></a>
-
-        <div class="merch-feed-zone">
-            <div class="merch-box" onclick="location.href='#tshirts'" title="Rat T-Shirts"></div>
-            <div class="merch-box" onclick="location.href='#patches'" title="Gothic Patches"></div>
-            <div class="merch-box" onclick="location.href='#bats'" title="Punk Bat Prints"></div>
-            <div class="merch-box" onclick="location.href='#secret'" title="Mystery Item"></div>
-        </div>
-
+    <div class="menu">
+      <a href="#">THE CAVE <span style="font-size:1.1rem;opacity:0.8;">Gallery</span></a>
+      <a href="#">THE STASH <span style="font-size:1.1rem;opacity:0.8;">Shop</span></a>
+      <a href="#">THE LORE <span style="font-size:1.1rem;opacity:0.8;">About</span></a>
+      <a href="#">THE GANG <span style="font-size:1.1rem;opacity:0.8;">Socials</span></a>
     </div>
 
-    <script>
-        const vexImage = document.getElementById('vex-image');
-        
-        vexImage.addEventListener('click', (e) => {
-            e.stopPropagation();
-            vexImage.style.filter = 'drop-shadow(0 0 35px #a200ff) hue-rotate(45deg) brightness(1.3)';
-            vexImage.style.transform = 'scale(1.1) rotate(-8deg)';
-            
-            setTimeout(() => {
-                vexImage.style.filter = 'drop-shadow(0 0 15px rgba(162, 0, 255, 0.4))';
-                vexImage.style.transform = 'scale(1) rotate(0deg)';
-            }, 250);
-        });
-    </script>
+    <div class="merch-feed">
+      <div class="feed-title">MERCHANDISING FEED</div>
+      <div class="merch-item">Gothic-Punk Rat T-Shirts</div>
+      <div class="merch-item">Gothic Patches Prints</div>
+      <div class="merch-item">Gothic-Punk-Bats Prints</div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('rat-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const rat = {
+      img: new Image(),
+      baseX: 0.24,
+      baseY: 0.48,
+      size: 520
+    };
+
+    rat.img.src = 'assets/vex.png';
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const float = Math.sin(Date.now() / 400) * 18;
+      const x = canvas.width * rat.baseX;
+      const y = canvas.height * rat.baseY + float;
+      ctx.drawImage(rat.img, x, y, rat.size, rat.size);
+      requestAnimationFrame(animate);
+    }
+
+    canvas.addEventListener('click', (e) => {
+      const ratCenterX = canvas.width * rat.baseX + rat.size / 2;
+      const ratCenterY = canvas.height * rat.baseY + rat.size / 2;
+      if (Math.hypot(e.clientX - ratCenterX, e.clientY - ratCenterY) < rat.size * 0.7) {
+        canvas.style.filter = 'brightness(3) saturate(2.8)';
+        setTimeout(() => canvas.style.filter = '', 280);
+      }
+    });
+
+    rat.img.onload = animate;
+  </script>
 </body>
 </html>
