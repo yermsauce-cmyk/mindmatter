@@ -149,16 +149,59 @@
         }
         fluidTracking();
 
+        // --- VEX CLICK LEVEL SYSTEM ---
+        let vexLevel = parseInt(localStorage.getItem('vexLevel')) || 1;
+        let vexClickCount = parseInt(localStorage.getItem('vexClicks')) || 0;
+        const clicksPerLevel = 10;
+
+        const levelDisplay = document.createElement('div');
+        levelDisplay.style.cssText = 'position:absolute;bottom:5%;left:50%;transform:translateX(-50%);color:#ff00ff;font-size:1.8rem;font-weight:bold;z-index:50;text-shadow:0 0 10px #ff00ff,0 0 20px #ff0088;pointer-events:none;text-align:center;';
+        levelDisplay.innerHTML = `VEX LEVEL <span id="level-num">${vexLevel}</span><br><span style="font-size:1rem;opacity:0.8;">Clicks: <span id="click-count">${vexClickCount}</span> / ${clicksPerLevel}</span>`;
+        document.body.appendChild(levelDisplay);
+
+        const progressBar = document.createElement('div');
+        progressBar.style.cssText = 'position:absolute;bottom:12%;left:50%;transform:translateX(-50%);width:200px;height:8px;background:#222;border:1px solid #ff0044;border-radius:4px;z-index:50;pointer-events:none;overflow:hidden;';
+        const progressFill = document.createElement('div');
+        progressFill.style.cssText = `height:100%;width:${(vexClickCount/clicksPerLevel)*100}%;background:linear-gradient(90deg,#ff0044,#ff00ff);transition:width 0.3s ease;`;
+        progressBar.appendChild(progressFill);
+        document.body.appendChild(progressBar);
+
+        function showLevelUp() {
+            const lvlUp = document.createElement('div');
+            lvlUp.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);color:#ff00ff;font-size:4rem;font-weight:bold;z-index:10000;text-shadow:0 0 30px #ff00ff,0 0 60px #ff0088,0 0 90px #ff0044;pointer-events:none;animation:lvlUpAnim 1.5s ease-out forwards;';
+            lvlUp.textContent = `LEVEL ${vexLevel}!`;
+            document.body.appendChild(lvlUp);
+            const style = document.createElement('style');
+            style.textContent = '@keyframes lvlUpAnim{0%{opacity:0;transform:translate(-50%,-50%) scale(0.5);}20%{opacity:1;transform:translate(-50%,-50%) scale(1.2);}80%{opacity:1;transform:translate(-50%,-50%) scale(1);}100%{opacity:0;transform:translate(-50%,-60%) scale(0.8);}}';
+            document.head.appendChild(style);
+            setTimeout(() => lvlUp.remove(), 1500);
+        }
+
         vexImage.addEventListener('click', (e) => {
             e.stopPropagation();
-            
             vexImage.style.filter = 'drop-shadow(0 0 35px #a200ff) hue-rotate(45deg) brightness(1.3)';
             vexImage.style.transform = 'scale(1.1) rotate(-8deg)';
-            
-            setTimeout(() => {
-                vexImage.style.filter = 'drop-shadow(0 0 15px rgba(162, 0, 255, 0.4))';
-                vexImage.style.transform = 'scale(1) rotate(0deg)';
-            }, 250);
+            setTimeout(() => { vexImage.style.filter = 'drop-shadow(0 0 15px rgba(162,0,255,0.4))'; vexImage.style.transform = 'scale(1) rotate(0deg)'; }, 250);
+
+            vexClickCount++;
+            document.getElementById('click-count').textContent = vexClickCount;
+            progressFill.style.width = `${(vexClickCount/clicksPerLevel)*100}%`;
+
+            if (vexClickCount >= clicksPerLevel) {
+                vexLevel++;
+                vexClickCount = 0;
+                document.getElementById('level-num').textContent = vexLevel;
+                document.getElementById('click-count').textContent = vexClickCount;
+                progressFill.style.width = '0%';
+                localStorage.setItem('vexLevel', vexLevel);
+                localStorage.setItem('vexClicks', vexClickCount);
+                showLevelUp();
+                const baseSize = 42;
+                const newSize = Math.min(baseSize + (vexLevel - 1) * 3, 70);
+                document.getElementById('vex-layer').style.width = `${newSize}%`;
+            } else {
+                localStorage.setItem('vexClicks', vexClickCount);
+            }
         });
     </script>
 </body>
