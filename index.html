@@ -154,13 +154,22 @@
         let vexClickCount = parseInt(localStorage.getItem('vexClicks')) || 0;
         const clicksPerLevel = 10;
 
+        // Level display positioned on skull cutout area
         const levelDisplay = document.createElement('div');
-        levelDisplay.style.cssText = 'position:absolute;bottom:5%;left:50%;transform:translateX(-50%);color:#ff00ff;font-size:1.8rem;font-weight:bold;z-index:50;text-shadow:0 0 10px #ff00ff,0 0 20px #ff0088;pointer-events:none;text-align:center;';
-        levelDisplay.innerHTML = `VEX LEVEL <span id="level-num">${vexLevel}</span><br><span style="font-size:1rem;opacity:0.8;">Clicks: <span id="click-count">${vexClickCount}</span> / ${clicksPerLevel}</span>`;
+        levelDisplay.style.cssText = 'position:absolute;top:18%;left:8%;z-index:50;pointer-events:none;text-align:center;';
+        levelDisplay.innerHTML = `
+            <div style="color:#ff00ff;font-size:2.2rem;font-weight:bold;text-shadow:0 0 15px #ff00ff,0 0 30px #ff0088,0 0 45px #ff0044;font-family:'Permanent Marker',cursive;letter-spacing:2px;">
+                LEVEL <span id="level-num" style="font-size:3rem;color:#fff;">${vexLevel}</span>
+            </div>
+            <div style="color:#ff88cc;font-size:0.9rem;margin-top:4px;text-shadow:0 0 8px #ff0088;">
+                <span id="click-count">${vexClickCount}</span> / ${clicksPerLevel} CLICKS
+            </div>
+        `;
         document.body.appendChild(levelDisplay);
 
+        // Progress bar below level
         const progressBar = document.createElement('div');
-        progressBar.style.cssText = 'position:absolute;bottom:12%;left:50%;transform:translateX(-50%);width:200px;height:8px;background:#222;border:1px solid #ff0044;border-radius:4px;z-index:50;pointer-events:none;overflow:hidden;';
+        progressBar.style.cssText = 'position:absolute;top:26%;left:8%;width:120px;height:6px;background:rgba(0,0,0,0.5);border:1px solid #ff0044;border-radius:3px;z-index:50;pointer-events:none;overflow:hidden;';
         const progressFill = document.createElement('div');
         progressFill.style.cssText = `height:100%;width:${(vexClickCount/clicksPerLevel)*100}%;background:linear-gradient(90deg,#ff0044,#ff00ff);transition:width 0.3s ease;`;
         progressBar.appendChild(progressFill);
