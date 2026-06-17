@@ -132,6 +132,11 @@
         let mouseY = window.innerHeight / 2;
         let currentX = window.innerWidth / 4;
         let currentY = window.innerHeight / 2;
+        let velocityX = 0;
+        let velocityY = 0;
+        let rotation = 0;
+        let rotationVelocity = 0;
+        let time = 0;
 
         window.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
@@ -139,11 +144,46 @@
         });
 
         function fluidTracking() {
-            currentX += (mouseX - currentX) * 0.04;
-            currentY += (mouseY - currentY) * 0.04;
+            time += 0.016;
 
-            vexLayer.style.left = `${currentX}px`;
-            vexLayer.style.top = `${currentY}px`;
+            // Spring physics for smooth follow
+            const dx = mouseX - currentX;
+            const dy = mouseY - currentY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            // Spring force
+            const springStrength = 0.03;
+            const damping = 0.85;
+            velocityX += dx * springStrength;
+            velocityY += dy * springStrength;
+            velocityX *= damping;
+            velocityY *= damping;
+
+            currentX += velocityX;
+            currentY += velocityY;
+
+            // Organic floating motion (sine waves)
+            const floatX = Math.sin(time * 1.5) * 15;
+            const floatY = Math.cos(time * 1.2) * 20;
+            const breathe = 1 + Math.sin(time * 2) * 0.03;
+
+            // Rotation based on movement
+            rotationVelocity += (velocityX * 0.15 - rotation * 0.1) * 0.02;
+            rotationVelocity *= 0.92;
+            rotation += rotationVelocity;
+
+            // Wobble effect
+            const wobble = Math.sin(time * 3) * 3;
+
+            vexLayer.style.left = `${currentX + floatX}px`;
+            vexLayer.style.top = `${currentY + floatY}px`;
+            vexLayer.style.transform = `translate(-50%, -50%) scale(${breathe}) rotate(${rotation + wobble}deg)`;
+
+            // Dynamic glow based on speed
+            const speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
+            const glowIntensity = Math.min(20 + speed * 2, 50);
+            const hue = 280 + Math.sin(time) * 20;
+            vexImage.style.filter = `drop-shadow(0 0 ${glowIntensity}px hsla(${hue}, 100%, 50%, 0.6)) brightness(${1 + speed * 0.01})`;
 
             requestAnimationFrame(fluidTracking);
         }
