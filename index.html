@@ -32,31 +32,12 @@
             box-shadow: 0 0 50px rgba(0,0,0,0.9) inset;
         }
 
-        #vex-layer {
+        #rat-canvas {
             position: absolute;
-            width: 45%;
-            z-index: 10;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            will-change: transform;
-            left: 28%;
-            top: 50%;
-        }
-
-        #vex-image {
-            width: 100%;
-            height: auto;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 2;
             pointer-events: auto;
-            cursor: pointer;
-            filter: drop-shadow(0 0 15px rgba(162, 0, 255, 0.4));
-            animation: levitate 4s ease-in-out infinite alternate;
-            transition: filter 0.2s ease, transform 0.1s ease;
-        }
-
-        @keyframes levitate {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(1deg); }
-            100% { transform: translateY(5px) rotate(-1deg); }
         }
 
         .hitbox {
@@ -106,9 +87,7 @@
 
     <div class="wrapper">
         
-        <div id="vex-layer">
-            <img id="vex-image" src="assets/image_2.png" alt="Vex">
-        </div>
+        <canvas id="rat-canvas"></canvas>
 
         <a href="#gallery" class="hitbox link-cave" title="The Cave Gallery"></a>
         <a href="#shop" class="hitbox link-stash" title="The Stash Shop"></a>
@@ -125,69 +104,48 @@
     </div>
 
     <script>
-        const vexLayer = document.getElementById('vex-layer');
-        const vexImage = document.getElementById('vex-image');
-        
-        let mouseX = window.innerWidth / 4;
-        let mouseY = window.innerHeight / 2;
-        let currentX = window.innerWidth / 4;
-        let currentY = window.innerHeight / 2;
-        let velocityX = 0;
-        let velocityY = 0;
-        let rotation = 0;
-        let rotationVelocity = 0;
-        let time = 0;
+        const canvas = document.getElementById('rat-canvas');
+        const ctx = canvas.getContext('2d');
 
-        window.addEventListener('mousemove', (e) => {
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        const rat = {
+            img: new Image(),
+            baseX: 0.24,
+            baseY: 0.48,
+            size: 520
+        };
+
+        rat.img.src = 'assets/vex.png';
+
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+
+        document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
         });
 
-        function fluidTracking() {
-            time += 0.016;
-
-            // Spring physics for smooth follow
-            const dx = mouseX - currentX;
-            const dy = mouseY - currentY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-
-            // Spring force
-            const springStrength = 0.03;
-            const damping = 0.85;
-            velocityX += dx * springStrength;
-            velocityY += dy * springStrength;
-            velocityX *= damping;
-            velocityY *= damping;
-
-            currentX += velocityX;
-            currentY += velocityY;
-
-            // Organic floating motion (sine waves)
-            const floatX = Math.sin(time * 1.5) * 15;
-            const floatY = Math.cos(time * 1.2) * 20;
-            const breathe = 1 + Math.sin(time * 2) * 0.03;
-
-            // Rotation based on movement
-            rotationVelocity += (velocityX * 0.15 - rotation * 0.1) * 0.02;
-            rotationVelocity *= 0.92;
-            rotation += rotationVelocity;
-
-            // Wobble effect
-            const wobble = Math.sin(time * 3) * 3;
-
-            vexLayer.style.left = `${currentX + floatX}px`;
-            vexLayer.style.top = `${currentY + floatY}px`;
-            vexLayer.style.transform = `translate(-50%, -50%) scale(${breathe}) rotate(${rotation + wobble}deg)`;
-
-            // Dynamic glow based on speed
-            const speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
-            const glowIntensity = Math.min(20 + speed * 2, 50);
-            const hue = 280 + Math.sin(time) * 20;
-            vexImage.style.filter = `drop-shadow(0 0 ${glowIntensity}px hsla(${hue}, 100%, 50%, 0.6)) brightness(${1 + speed * 0.01})`;
-
-            requestAnimationFrame(fluidTracking);
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const float = Math.sin(Date.now() / 400) * 16;
+            const x = canvas.width * rat.baseX + (mouseX - canvas.width/2) * 0.02;
+            const y = canvas.height * rat.baseY + float + (mouseY - canvas.height/2) * 0.02;
+            ctx.drawImage(rat.img, x, y, rat.size, rat.size);
+            requestAnimationFrame(animate);
         }
-        fluidTracking();
+
+        canvas.addEventListener('click', () => {
+            canvas.style.filter = 'brightness(3) saturate(2.8) hue-rotate(20deg)';
+            setTimeout(() => canvas.style.filter = '', 300);
+        });
+
+        rat.img.onload = animate;
 
         // --- VEX CLICK LEVEL SYSTEM ---
         let vexLevel = parseInt(localStorage.getItem('vexLevel')) || 1;
@@ -226,12 +184,12 @@
             setTimeout(() => lvlUp.remove(), 1500);
         }
 
-        vexImage.addEventListener('click', (e) => {
-            e.stopPropagation();
-            vexImage.style.filter = 'drop-shadow(0 0 35px #a200ff) hue-rotate(45deg) brightness(1.3)';
-            vexImage.style.transform = 'scale(1.1) rotate(-8deg)';
-            setTimeout(() => { vexImage.style.filter = 'drop-shadow(0 0 15px rgba(162,0,255,0.4))'; vexImage.style.transform = 'scale(1) rotate(0deg)'; }, 250);
+        canvas.addEventListener('click', (e) => {
+            // Visual feedback
+            canvas.style.filter = 'brightness(3) saturate(2.8) hue-rotate(20deg)';
+            setTimeout(() => canvas.style.filter = '', 300);
 
+            // Update level system
             vexClickCount++;
             document.getElementById('click-count').textContent = vexClickCount;
             progressFill.style.width = `${(vexClickCount/clicksPerLevel)*100}%`;
@@ -245,9 +203,8 @@
                 localStorage.setItem('vexLevel', vexLevel);
                 localStorage.setItem('vexClicks', vexClickCount);
                 showLevelUp();
-                const baseSize = 42;
-                const newSize = Math.min(baseSize + (vexLevel - 1) * 3, 70);
-                document.getElementById('vex-layer').style.width = `${newSize}%`;
+                // Vex grows with level
+                rat.size = Math.min(520 + (vexLevel - 1) * 20, 800);
             } else {
                 localStorage.setItem('vexClicks', vexClickCount);
             }
